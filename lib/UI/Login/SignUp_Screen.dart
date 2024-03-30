@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../API_services/Api_Services.dart';
+import '../../Model/Sigup_model.dart';
+import '../../Utils/base.dart';
+import '../../Utils/utils.dart';
+
 class SignUp_screen extends StatefulWidget {
   const SignUp_screen({super.key});
 
@@ -16,6 +21,43 @@ class _SignUp_screenState extends State<SignUp_screen> {
   TextEditingController designationcontroller = TextEditingController();
   TextEditingController createpasswordcontroller = TextEditingController();
   TextEditingController recreatepasswordcontroller = TextEditingController();
+  bool isLoading = true;
+  Sigup_Model? cSigup_Model;
+  List<String>? Designationlist = ["Student", "Doctor"];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Signupmain() {
+    isLoading = true;
+    setState(() {});
+    ApiServices()
+        .signup(
+      Useridcontroller.text,
+      namecontroller.text,
+      mobilecontroller.text,
+      emailcontroller.text,
+      instituecontroller.text,
+      designationcontroller.text,
+      createpasswordcontroller.text,
+      recreatepasswordcontroller.text,
+    )
+        .then((value) {
+      if (value != null && (value!.status! == true)) {
+        print("login");
+        print(value);
+        cSigup_Model = value;
+        print("object");
+      } else {
+        // toastMessage(context, value!.message!.toString(), Colors.red);
+        toastMessage(context, "Something went wrong", Colors.red);
+      }
+      isLoading = false;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +73,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
         child: Column(
           children: [
             ClipOval(
-              child: Center(child: Image.asset("assets/image 20.png")),
+              child: RotatingImage(),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -44,23 +86,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                controller: Useridcontroller,
-                decoration: InputDecoration(
-                  // suffixIcon:Icon(Icons.cancel_outlined,color: Colors.blue.shade800),
-                  hintText: 'User Id',
-                  // labelStyle: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
@@ -72,9 +98,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
@@ -100,7 +124,9 @@ class _SignUp_screenState extends State<SignUp_screen> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
@@ -117,12 +143,89 @@ class _SignUp_screenState extends State<SignUp_screen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                controller: designationcontroller,
-                decoration: InputDecoration(
-                  // suffixIcon:Icon(Icons.cancel_outlined,color: Colors.blue.shade800),
-                  hintText: 'Designation',
-                  // labelStyle: TextStyle(color: Colors.white),
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Row(
+                          children: [
+                            Text(
+                              'Select Designation',
+                              style: TextStyle(
+                                  color: Colors.blue.shade700,
+                                  fontSize: Base.titlefont),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    color: Colors.red,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        content: Container(
+                          width: double.maxFinite,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: Designationlist?.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = Designationlist![index];
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    designationcontroller.text =
+                                        Designationlist![index]!;
+                                    // print("selected ID:"+_selectedId.toString());
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.6,
+                                        child: Text(
+                                          "${Designationlist![index]}",
+                                          style: TextStyle(
+                                              fontSize: Base.subdetailfont),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(thickness: 1),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: TextField(
+                  controller: designationcontroller,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.arrow_drop_down_circle),
+                    hintText: 'Designation',
+                    // labelStyle: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -154,6 +257,9 @@ class _SignUp_screenState extends State<SignUp_screen> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 60,
+            )
           ],
         ),
       ),
@@ -164,19 +270,38 @@ class _SignUp_screenState extends State<SignUp_screen> {
           child: Text(
             "Create Account",
             style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontSize: 16),
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
           ),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => Creategroup()),
-            // );
+            print(
+              Useridcontroller.text,
+            );
+            print(
+              namecontroller.text,
+            );
+            print(
+              mobilecontroller.text,
+            );
+            print(
+              emailcontroller.text,
+            );
+            print(
+              instituecontroller.text,
+            );
+            print(
+              designationcontroller.text,
+            );
+            print(
+              createpasswordcontroller.text,
+            );
+            print(
+              recreatepasswordcontroller.text,
+            );
+            Signupmain();
           },
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero),
+            backgroundColor: Color(0xFF434B90),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             // backgroundColor: Color(0xFF434B90),
           ),
         ),

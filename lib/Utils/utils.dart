@@ -1,33 +1,34 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
+
 
 Widget loaderWidget() {
-  AnimationController _controller = AnimationController(
-    vsync: AnimatedTickerProvider(),
-    duration: Duration(seconds: 1), // You can adjust the duration as needed
-  )..repeat();
-
   return Center(
-    child: AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: _controller.value * 2.0 * 3.14, // 2.0 * 3.14 represents a full rotation
-          child: Container(
-            height: 120,
-            width: 120,
-            child: ClipOval(
-                child: Image.asset("assets/image 20.png")),
-          ),
-        );
-      },
+    child: CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+      backgroundColor: Colors.lightBlueAccent,
     ),
   );
 }
+// Widget loaderWidget() {
+//   return Center(
+//     child: Container(
+//         height: 150,
+//         width: 150,
+//         child: Lottie.asset("asset/fruitwalk.json")),
+//     // child: CircularProgressIndicator(
+//     //   color: Colors.blue,
+//     // ),
+//   );
+// }
+
+
 
 class RotatingImage extends StatefulWidget {
   @override
@@ -40,11 +41,13 @@ class _RotatingImageState extends State<RotatingImage>
 
   @override
   void initState() {
-    _controller =
-    AnimationController(vsync: this, duration: Duration(minutes:10))
-      ..repeat(); // repeat the animation infinitely
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10), // Set duration to 10 seconds for example
+    )..repeat(); // repeat the animation infinitely
     super.initState();
   }
+
 
   @override
   void dispose() {
@@ -64,12 +67,14 @@ class _RotatingImageState extends State<RotatingImage>
           );
         },
         child: Center(
-          child: Image.asset("assets/image 20.png"),
+          child: ClipOval(child: Image.asset("assets/image 20.png")),
         ),
       ),
     );
   }
 }
+
+
 class AnimatedTickerProvider extends TickerProvider {
   @override
   Ticker createTicker(TickerCallback onTick) {
@@ -110,7 +115,8 @@ void toastMessage(BuildContext context, String msg, Color color) {
   );
   return fToast.showToast(
       child: toast,
-      toastDuration: Duration(seconds: 4),
+      toastDuration: Duration(seconds: 3),
       gravity: ToastGravity.TOP);
 }
+
 

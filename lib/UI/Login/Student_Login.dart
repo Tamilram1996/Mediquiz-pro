@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:mediquizpro/API_services/Api_Services.dart';
 import 'package:mediquizpro/Model/Login_Model.dart';
+import '../../Utils/shared_preference.dart';
 import '../../Utils/utils.dart';
+import '../Doctor/Doctor_Dashboard.dart';
+import '../Student/Student_Dashboard.dart';
 import 'SignUp_Screen.dart';
-import 'Student_Login.dart';
 
-class Doctor_Login extends StatefulWidget {
-  const Doctor_Login({super.key});
+class Student_Login extends StatefulWidget {
+  String? title;
+  Student_Login({super.key,this.title });
 
   @override
-  State<Doctor_Login> createState() => _Doctor_LoginState();
+  State<Student_Login> createState() => _Student_LoginState();
 }
 
-class _Doctor_LoginState extends State<Doctor_Login> {
+class _Student_LoginState extends State<Student_Login> {
   TextEditingController Usernamecontroller = TextEditingController();
   TextEditingController Passwordcontroller = TextEditingController();
   bool isLoading = true;
  Login_Model? cLogin_Model;
   Data? datalist;
-
+  String? designation;
+  bool obscureText = true;
 
   @override
   void initState() {
@@ -35,21 +39,24 @@ class _Doctor_LoginState extends State<Doctor_Login> {
         print("login");
         print(value);
         cLogin_Model = value;
-        Data? datalist;
+        setUserName(Usernamecontroller.text.toString(),Passwordcontroller.text.toString());
+        Setuser(Usernamecontroller.text.toString());
+        print(setUserName);
+        designation = cLogin_Model!.data!.designation;
+        print("object");
+        print(designation);
 
         if(cLogin_Model!.data!.designation == "Student") {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //   // builder: (context) => Admin_Mainscreen()));
-          //     builder: (context) => ()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Student_Dashboard(),
+            ),
+          );
         }
-        if(cLogin_Model!.data!.designation == "Doctor") {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //   // builder: (context) => Admin_Mainscreen()));
-          //     builder: (context) => ()));
+        else if(cLogin_Model!.data!.designation == "Doctor") {
+          toastMessage(context, "Use student id to login", Colors.red);
         }
-
-        toastMessage(context, value!.message!.toString(), Colors.red);
-
       }
       else {
         toastMessage(context, value!.message!.toString(), Colors.red);
@@ -82,7 +89,7 @@ class _Doctor_LoginState extends State<Doctor_Login> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-        Text("Doctor Login",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+        Text("${widget.title}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
             ],
           ),
           SizedBox(height: 30,),
@@ -99,16 +106,26 @@ class _Doctor_LoginState extends State<Doctor_Login> {
           ),
           SizedBox(height: 20,),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal:40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: TextField(
-        controller: Passwordcontroller,
-        decoration: InputDecoration(
-          // suffixIcon:Icon(Icons.cancel_outlined,color: Colors.blue.shade800),
-          hintText: 'Password',
-          // labelStyle: TextStyle(color: Colors.white),
-        ),
+              controller: Passwordcontroller,
+              obscureText: obscureText, // Ensures the text is hidden by default
+              decoration: InputDecoration(
+                hintText: 'Password',
+                suffixIcon: IconButton(
+                  icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility,
+                  ), // Icon for toggling visibility
+                  onPressed: () {
+                    setState(() {
+                      // Toggle the obscureText value to show/hide the password
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
             ),
           ),
+
         ],
         ),
       ),
@@ -120,6 +137,7 @@ class _Doctor_LoginState extends State<Doctor_Login> {
             width: MediaQuery.of(context).size.width/2.05,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF434B90),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0), // Adjust the value as needed
                 ),
@@ -128,34 +146,8 @@ class _Doctor_LoginState extends State<Doctor_Login> {
                 print(Usernamecontroller.text);
                 print(Passwordcontroller.text);
                 print("TEXT");
-                ApiServices().login(Usernamecontroller.text,Passwordcontroller.text).then((value) {
-                  if (value != null &&
-                      (value!.status! == true)) {
-                    print("login");
-                    print(value);
-                    cLogin_Model = value;
 
-
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //   // builder: (context) => Admin_Mainscreen()));
-                    //     builder: (context) => ()));
-
-                    toastMessage(context, value!.message!.toString(), Colors.green);
-
-                  }
-                  else {
-                    toastMessage(context, value!.message!.toString(), Colors.red);
-                  }
-                  isLoading = false;
-                  setState(() {
-                  });
-                });
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => Student_Login()
-                //   ),
-                // );
+                Loginmain();
               },
               child: Text('Login'),
             ),
@@ -165,6 +157,7 @@ class _Doctor_LoginState extends State<Doctor_Login> {
             width: MediaQuery.of(context).size.width/2.05,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF434B90),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0), // Adjust the value as needed
                 ),
