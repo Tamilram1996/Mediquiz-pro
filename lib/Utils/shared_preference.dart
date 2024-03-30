@@ -25,14 +25,8 @@ setAuthToken(String data) async {
   prefs.setString('token', data);
 }
 
-
-setBioId(String data) async {
-  print("tokdata" + data);
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('token', data);
-}
-
-Future<String> getBioId() async {
+//Usercredentialget
+Future<String> Getuserid() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('token') != null &&
       prefs.getString('token')!.isNotEmpty) {
@@ -42,5 +36,36 @@ Future<String> getBioId() async {
   }
   return prefs.getString('token') != null
       ? prefs.getString('token').toString()
+      : "";
+}
+Setuser(String data) async {
+  print("tokdata" + data);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('token', data);
+}
+
+
+//Usercredentialset
+
+//Usercredentialclear - Homescreen there
+setUserName(String data,String Password) async {
+  print("userName" + data);
+  print("Password" + Password);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('userName', data);
+  prefs.setString('Password', Password);
+}
+
+Future<String> getUserName() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString('userName') != null && prefs.getString('Password') != null &&
+  prefs.getString('userName')!.isNotEmpty) {
+    print("userName" + prefs.getString('userName').toString());
+    print("Password" + prefs.getString('Password').toString());
+  } else {
+    print("Token is  Empty");
+  }
+  return prefs.getString('userName') != null && prefs.getString('Password') != null
+      ? prefs.getString('userName').toString()
       : "";
 }

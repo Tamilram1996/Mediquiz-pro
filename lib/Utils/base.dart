@@ -28,6 +28,15 @@ class Base{
   // static String baseUrl_hr ="";
 
   static String login="login.php";
+  static String signup="signup.php";
+  static String profile="profile.php";
+  static String editprofile="editprofile.php";
+  static String leaderboard="leaderboard.php";
+  static String student="studentlist.php";
+  static String getquestion="getquestions.php";
+  static String Totalscore="showscore.php";
+  static String correctanswer="correctanswers.php";
+  static String wronganswer="wronganswers.php";
 
 
 }
