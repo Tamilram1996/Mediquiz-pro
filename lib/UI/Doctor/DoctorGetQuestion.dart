@@ -86,7 +86,7 @@ class _DoctorGetQuestionState extends State<DoctorGetQuestion> {
                 ),
               );
             },
-            icon: Image.asset("assets/Male User-1.png"),
+            icon: Image.asset("assets/Male User-2.png"),
           ),
         ],
       ),

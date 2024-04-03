@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../../Utils/shared_preference.dart';
 import '../../Utils/utils.dart';
+import '../Splash_screen.dart';
 import 'Add_Question.dart';
 import 'DoctorGetQuestion.dart';
 import 'Doctor_Profile.dart';
 import 'Leaderboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Student_list.dart';
 
 class Doctor_Dashboard extends StatefulWidget {
@@ -53,7 +54,7 @@ class _Doctor_DashboardState extends State<Doctor_Dashboard> {
 
 print("object");
             },
-            icon: Image.asset("assets/Laurel Wreath-1.png"),
+            icon: Image.asset("assets/Laurel Wreath-2.png"),
           ),
           actions: [
           IconButton(
@@ -66,7 +67,7 @@ print("object");
                   ),
                 );
               },
-              icon:  Image.asset("assets/Male User-1.png"),
+              icon:  Image.asset("assets/Male User-2.png"),
             ),
           ]
       ),
@@ -146,6 +147,18 @@ print("object");
           ),
         ],
       ),
+      bottomSheet: GestureDetector(
+        onTap: () async {
+          logout();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Splashscreen(),
+            ),
+          );
+        },
+          child: Image.asset("assets/Logout Rounded Left.png",color: Colors.black,))
     );
   }
 }

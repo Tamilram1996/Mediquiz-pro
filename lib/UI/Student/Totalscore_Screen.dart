@@ -93,16 +93,18 @@ class _Totalscore_MainscreenState extends State<Totalscore_Mainscreen> {
         height: 45,
         child: ElevatedButton(
           child: Text(
-            "Back",
+            "Next",
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
           ),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => Congratulation_screen()),
-            // );
-            Navigator.pop(context);
+            print("Congratulation_screen");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Congratulation_screen(),
+              ),
+            );
           },
           style: ElevatedButton.styleFrom(
             shape:
@@ -169,7 +171,7 @@ class _CircularProgressWithLabelState extends State<CircularProgressWithLabel>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: Duration(seconds: 3));
     _animation =
     Tween<double>(begin: 0, end: widget.value).animate(_animationController)
       ..addListener(() {
@@ -202,7 +204,7 @@ class _CircularProgressWithLabelState extends State<CircularProgressWithLabel>
           ),
         ),
         Text(
-          '${(_animation.value * 100).toInt()}%',
+          '${(_animation.value * 10).toInt()}%',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,

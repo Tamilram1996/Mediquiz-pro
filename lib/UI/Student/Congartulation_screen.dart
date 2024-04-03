@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediquizpro/UI/Student/Student_Dashboard.dart';
 
 class Congratulation_screen extends StatefulWidget {
   const Congratulation_screen({super.key});
@@ -8,6 +9,13 @@ class Congratulation_screen extends StatefulWidget {
 }
 
 class _Congratulation_screenState extends State<Congratulation_screen> {
+  // GlobalKey<NavigatorState> _yourKey = GlobalKey<NavigatorState>();
+  // _backPressed(GlobalKey<NavigatorState> _yourKey) async {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => Student_Dashboard()),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +39,12 @@ class _Congratulation_screenState extends State<Congratulation_screen> {
                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
          ),
          onPressed: () {
-           Navigator.pop(context);
-           Navigator.pop(context);
-           Navigator.pop(context);
-           Navigator.pop(context);
-           Navigator.pop(context);
+           Navigator.push(
+             context,
+             MaterialPageRoute(
+               builder: (context) => Student_Dashboard(),
+             ),
+           );
          },
          style: ElevatedButton.styleFrom(
            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),

@@ -1,4 +1,7 @@
+import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../../API_services/Api_Services.dart';
 import '../../Model/Leaderboard_model.dart';
 import '../../Utils/utils.dart';
@@ -15,7 +18,8 @@ class _leaderboardState extends State<leaderboard> {
   Leaderboard_model? cLeaderboard_model;
   String? totalscore;
   String? UserId;
-  List<String>? imagelist =["assets/k 1.png","assets/image 21.png","assets/k (2) 1.png"];
+  List<String>? imagelist =["assets/1.png","assets/2.png","assets/3.png"];
+  String? dummyimage;
   List<String> Total = [];
   List<String> User = [];
 
@@ -133,35 +137,28 @@ class _leaderboardState extends State<leaderboard> {
                       print("length");
                       var score = Total![index];
                       var id = User![index];
+                      var overimage = imagelist![index];
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal:0,vertical:6),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                        Visibility(
-                        visible : (index < 3) ,
-                          child: ClipOval(
-                               child: Image.asset(imagelist![index],
-                                 height:35,
-                                 width: 35,
-                               ),
-                             ),
-                        ),
-                            Visibility(
-                              visible : (index > 3) ,
-                              child: ClipOval(
-                                child: Image.asset("",
-                                  height:35,
-                                  width: 35,
-                                ),
+                            index < 3 ?  ClipOval(
+                              child: Image.asset(imagelist![index],
+                                height:35,
+                                width: 35,
+                              ),
+                            ) : ClipOval(
+                              child: Container(
+                                height:35,
+                                width: 35,
                               ),
                             ),
-
+                        SizedBox(width: 5,),
                             Text("${id!}",style: TextStyle(color: Colors.white),),
                           SizedBox(width: 40,),
                             Text("${score}",style: TextStyle(color: Colors.white),),
                           ],
-
                         ),
                       );
 
