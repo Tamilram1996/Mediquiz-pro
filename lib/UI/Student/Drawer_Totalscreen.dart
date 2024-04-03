@@ -97,10 +97,7 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> {
                 fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
           ),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => Congratulation_screen()),
-            // );
+
             Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(

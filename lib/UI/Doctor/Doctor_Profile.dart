@@ -33,7 +33,6 @@ class _Doctor_ProfileState extends State<Doctor_Profile> {
   void initState() {
     super.initState();
     bioIdFunction();
-    Useridcontroller.text = userid.toString();
   }
   void bioIdFunction() async{
     isLoading =true;

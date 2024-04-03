@@ -69,3 +69,16 @@ Future<String> getUserName() async {
       ? prefs.getString('userName').toString()
       : "";
 }
+Future<void> clearAuthToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('userName') && await prefs.remove('Password');
+}
+Future<void> logout() async {
+// Clear the authentication token
+  await clearAuthToken();
+
+
+// Additional logout actions can be added here
+// Example: navigate to the login screen
+// Navigator.pushReplacementNamed(context, '/login');
+}

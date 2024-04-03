@@ -25,6 +25,7 @@ class _Casestudy_screenState extends State<Casestudy_screen> {
   List<Data>? questionlist;
   List<Data>? questionid;
   bool isLoading = true;
+  TextEditingController Useridcontroller = TextEditingController();
 
 
   @override
@@ -34,6 +35,7 @@ class _Casestudy_screenState extends State<Casestudy_screen> {
 
 
   }
+
 
 
   QuestionMainAPI() async {

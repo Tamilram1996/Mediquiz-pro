@@ -37,6 +37,11 @@ class Base{
   static String Totalscore="showscore.php";
   static String correctanswer="correctanswers.php";
   static String wronganswer="wronganswers.php";
+  static String insert="insetanswer.php";
+  static String myinsert="insert.php";
+  static String addcasestudy="insert_casestudy.php";
+  static String count="count.php";
+  static String insert_question="insert_subquestions.php";
 
 
 }
