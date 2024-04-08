@@ -65,7 +65,9 @@ class _SignUp_screenState extends State<SignUp_screen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: Icon(Icons.arrow_back_ios),
           ),
           title: Text("Sign UP")),

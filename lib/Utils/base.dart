@@ -34,7 +34,8 @@ class Base{
   static String leaderboard="leaderboard.php";
   static String student="studentlist.php";
   static String getquestion="getquestions.php";
-  static String Totalscore="showscore.php";
+  // static String Totalscore="showscore.php";
+  static String Totalscore="total_score_android.php";
   static String correctanswer="correctanswers.php";
   static String wronganswer="wronganswers.php";
   static String insert="insetanswer.php";

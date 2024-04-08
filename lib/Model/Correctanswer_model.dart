@@ -1,11 +1,11 @@
-class Correctanswer_Model {
+class CorrectanswerModel {
   String? status;
   String? message;
   List<MatchedAnswersArray>? matchedAnswersArray;
 
-  Correctanswer_Model({this.status, this.message, this.matchedAnswersArray});
+  CorrectanswerModel({this.status, this.message, this.matchedAnswersArray});
 
-  Correctanswer_Model.fromJson(Map<String, dynamic> json) {
+  CorrectanswerModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['matched_answers_array'] != null) {

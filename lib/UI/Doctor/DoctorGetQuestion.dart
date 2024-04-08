@@ -86,7 +86,7 @@ class _DoctorGetQuestionState extends State<DoctorGetQuestion> {
                 ),
               );
             },
-            icon: Image.asset("assets/Male User-2.png"),
+            icon: Image.asset("assets/Male User-1.png"),
           ),
         ],
       ),
@@ -161,7 +161,7 @@ class _DoctorGetQuestionState extends State<DoctorGetQuestion> {
                             elevation: 5,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
+                                color: Colors.grey.shade50.withOpacity(1),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
