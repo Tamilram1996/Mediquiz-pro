@@ -197,7 +197,7 @@ class _Add_QuestionState extends State<Add_Question> {
                   ),
                 );
               },
-              icon: Image.asset("assets/Male User-2.png"),
+              icon: Image.asset("assets/Male User-1.png"),
             ),
           ]),
       body: SingleChildScrollView(

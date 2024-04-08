@@ -1,21 +1,30 @@
-class Totalscore_Model {
-  String? status;
-  int? totalScore;
-  int? totalWrong;
+class TotalscoreModel {
+  TotalscoreModel({
+    required this.status,
+    required this.totalScore,
+    required this.totalWrong,
+    required this.totalQuestion,
+  });
 
-  Totalscore_Model({this.status, this.totalScore, this.totalWrong});
+  final String? status;
+  final int? totalScore;
+  final int? totalWrong;
+  final int? totalQuestion;
 
-  Totalscore_Model.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    totalScore = json['total_score'];
-    totalWrong = json['total_wrong'];
+  factory TotalscoreModel.fromJson(Map<String, dynamic> json){
+    return TotalscoreModel(
+      status: json["status"],
+      totalScore: json["total_score"],
+      totalWrong: json["total_wrong"],
+      totalQuestion: json["total_question"],
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['total_score'] = this.totalScore;
-    data['total_wrong'] = this.totalWrong;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "total_score": totalScore,
+    "total_wrong": totalWrong,
+    "total_question": totalQuestion,
+  };
+
 }

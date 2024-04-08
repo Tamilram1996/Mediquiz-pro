@@ -54,7 +54,7 @@ class _Doctor_DashboardState extends State<Doctor_Dashboard> {
 
 print("object");
             },
-            icon: Image.asset("assets/Laurel Wreath-2.png"),
+            icon: Image.asset("assets/Laurel Wreath-1.png"),
           ),
           actions: [
           IconButton(
@@ -67,7 +67,7 @@ print("object");
                   ),
                 );
               },
-              icon:  Image.asset("assets/Male User-2.png"),
+              icon:  Image.asset("assets/Male User-1.png"),
             ),
           ]
       ),
@@ -101,8 +101,7 @@ print("object");
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    DoctorGetQuestion(
-                                    ),
+                                    DoctorGetQuestion(),
                               ),
                             );
                           }

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:mediquizpro/Model/Totalscore_model.dart';
 import 'package:mediquizpro/UI/Student/Congartulation_screen.dart';
@@ -14,23 +15,32 @@ class Drwaer_Totalscore extends StatefulWidget {
   State<Drwaer_Totalscore> createState() => _Drwaer_TotalscoreState();
 }
 
-class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> {
+class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> with TickerProviderStateMixin {
   bool isLoading = true;
-  Totalscore_Model? cTotalscore_Model;
+  TotalscoreModel? cTotalscore_Model;
   TextEditingController Useridcontroller = TextEditingController();
   dynamic present = 20;
-  String? Correctanswer;
-  String? Wronganswer;
+  double? Correctanswer;
+  dynamic? Wronganswer;
+  dynamic? Totalquestion;
+  late AnimationController _animationController;
+  late AnimationController _animationController2;
+  late Animation<double> _animation;
+  late Animation<double> _animation2;
+  double? correctRatio;
+  double? TotalRatio;
+  double? wrongRatio;
 
   @override
   void initState() {
     super.initState();
     bioIdFunction();
+    print(Totalquestion);
   }
 
   void bioIdFunction() async {
-    isLoading = true;
     setState(() {});
+    isLoading = true;
     userid = await Getuserid();
     Useridcontroller.text = userid.toString();
     print("edituserid");
@@ -45,23 +55,46 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> {
   TotalscoreMainAPI(Useridcontroller) async {
     isLoading = true;
     setState(() {});
-    ApiServices().totalscores(Useridcontroller.text).then((value) {
-      if (value != null && (value.status! == "success")) {
-        print("login");
-        print(value);
-        cTotalscore_Model = value;
-        Correctanswer = cTotalscore_Model!.totalScore.toString();
-        Wronganswer = cTotalscore_Model!.totalWrong.toString();
-        print(Correctanswer);
-        print("over");
-        toastMessage(context, value.status!.toString(), Colors.green);
-      } else {
-        toastMessage(context, "Something Went Wrong", Colors.red);
-        print("ghegt");
-      }
-      isLoading = false;
-      setState(() {});
-    });
+    try {
+      ApiServices().totalscores(Useridcontroller.text).then((value) {
+        if (value != null && (value.status! == "success")) {
+          print("login");
+          print(value);
+          cTotalscore_Model = value;
+          Correctanswer = double.tryParse(cTotalscore_Model!.totalScore.toString());
+          Wronganswer = double.tryParse(cTotalscore_Model!.totalWrong.toString());
+          Totalquestion = double.tryParse(cTotalscore_Model!.totalQuestion.toString());
+          TotalRatio = Totalquestion!.toInt().toDouble();
+          correctRatio = Correctanswer!.toInt().toDouble();
+          wrongRatio = Wronganswer!.toInt().toDouble();
+          print(TotalRatio);
+          print(correctRatio);
+          print(wrongRatio);
+          correctanimation();
+          // wronganimation2();
+          _animationController2 = AnimationController(
+            vsync: this,
+            duration: Duration(seconds: 2), // Adjust duration as needed
+          );
+          _animation2 = Tween<double>(
+            begin: 0.0,
+            end: wrongRatio!.toDouble() / TotalRatio!.toDouble(),
+          ).animate(_animationController2)
+            ..addListener(() {
+              setState(() {});
+            });
+          _animationController2.forward();
+          print("over");
+          toastMessage(context, value.status!.toString(), Colors.green);
+        } else {
+          toastMessage(context, "Something Went Wrong", Colors.red);
+          print("ghegt");
+        }
+        isLoading = false;
+        setState(() {});
+      });
+    }
+    catch (e) {}
   }
 
   @override
@@ -79,12 +112,30 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> {
         title: Text("Total Score"),
         actions: [],
       ),
-      body: Column(
+      body: Totalquestion ==null ? loaderWidget() : Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          CircularProgressWithLabel(0.4),
-          CircularProgressWithLabel(0.6),
-          // CircularProgresser(20),
+          SizedBox(height: 60,),
+          _buildStackForCorrectAnswer(),
+          SizedBox(height: 10,),
+          Text(
+            'Correct Answer',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 60,),
+          _buildStackForWrongAnswer(),
+          SizedBox(height: 10,),
+          Text(
+            'Wrong Answer',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(height: 90,),
         ],
       ),
       bottomSheet: Container(
@@ -97,108 +148,35 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> {
                 fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
           ),
           onPressed: () {
-
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           },
           style: ElevatedButton.styleFrom(
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
             backgroundColor: Color(0xFF434B90),
           ),
         ),
       ),
     );
   }
-}
 
-// class CircularProgressWithLabel extends StatelessWidget {
-//   final double value;
-//
-//   const CircularProgressWithLabel(this.value);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       alignment: Alignment.center,
-//       children: [
-//         Center(
-//           child: SizedBox(
-//             height: MediaQuery.of(context).size.height / 3.6,
-//             width: MediaQuery.of(context).size.width / 1.75,
-//             child: CircularProgressIndicator(
-//               value: value,
-//               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-//               backgroundColor: Colors.red,
-//               strokeWidth:25,
-//             ),
-//           ),
-//         ),
-//         Text(
-//           '${(value * 100).toInt()}%',
-//           style: TextStyle(
-//             fontSize: 20,
-//             color: Colors.black,
-//             fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-class CircularProgressWithLabel extends StatefulWidget {
-  final double value;
-
-  const CircularProgressWithLabel(this.value);
-
-  @override
-  _CircularProgressWithLabelState createState() =>
-      _CircularProgressWithLabelState();
-}
-
-class _CircularProgressWithLabelState extends State<CircularProgressWithLabel>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _animation =
-    Tween<double>(begin: 0, end: widget.value).animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      });
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildStackForCorrectAnswer() {
     return Stack(
       alignment: Alignment.center,
       children: [
         Center(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height / 3.6,
-            width: MediaQuery.of(context).size.width / 1.75,
+            height: MediaQuery.of(context).size.height /4.5,
+            width: MediaQuery.of(context).size.width / 2.25,
             child: CircularProgressIndicator(
               value: _animation.value,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.white,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.green), // Change color to green for correct answer
               strokeWidth: 25,
             ),
           ),
         ),
         Text(
-          '${(_animation.value * 100).toInt()}%',
+          '${_animation.value * 100}%',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
@@ -207,5 +185,63 @@ class _CircularProgressWithLabelState extends State<CircularProgressWithLabel>
         ),
       ],
     );
+  }
+
+  Widget _buildStackForWrongAnswer() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Center(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height / 4.5,
+            width: MediaQuery.of(context).size.width / 2.25,
+            child: CircularProgressIndicator(
+              value: _animation2.value,
+              backgroundColor: Colors.white,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.red), // Change color to red for wrong answer
+              strokeWidth: 25,
+            ),
+          ),
+        ),
+        Text(
+          '${_animation2.value * 100}%',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void correctanimation() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2), // Adjust duration as needed
+    );
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: correctRatio!.toDouble() / TotalRatio!.toDouble(),
+    ).animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController.forward();
+  }
+
+  void wronganimation2() {
+    _animationController2 = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2), // Adjust duration as needed
+    );
+    _animation2 = Tween<double>(
+      begin: 0.0,
+      end: wrongRatio!.toDouble() / TotalRatio!.toDouble(),
+    ).animate(_animationController2)
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController2.forward();
   }
 }

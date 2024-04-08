@@ -12,7 +12,7 @@ import 'Drawer_Totalscreen.dart';
 import 'Pathology_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Review_screen.dart';
+import 'DrawerReview_screen.dart';
 
 
 class Student_Dashboard extends StatefulWidget {
@@ -114,7 +114,7 @@ class _Student_DashboardState extends State<Student_Dashboard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      Review_screen(),
+                      DrawerReview_screen(),
                 ),
               );
             }

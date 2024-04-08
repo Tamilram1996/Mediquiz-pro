@@ -331,38 +331,36 @@ class ApiServices {
     }
   }
 
-  Future<Totalscore_Model?> totalscores(String userid) async {
+  Future<TotalscoreModel?> totalscores(String userid) async {
     String mToken = await getAuthToken();
     print("API:::title");
     print(userid);
-
     try {
-      var query = {
+      FormData formData = FormData.fromMap({
         "user_id": userid,
-      };
-      print("query");
-      print(query);
-print(Base.baseURL + Base.Totalscore);
-      Response response = await Dio().get(
-        Base.baseURL + Base.Totalscore,
-        queryParameters: {
-          "user_id": userid,
-        },
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          'Authorization': mToken,
-        }),
+      });
+      print(Base.baseURL + Base.Totalscore);
+      Response response = await Dio().post(
+        // Base.baseURL + Base.Totalscore,
+        "http://192.168.0.236//manohar/total_score_android.php",
+        data: formData,
+        options: Options(
+          headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': mToken,
+          },
+        ),
       );
+      print("userid");
+      print(userid);
+      print(formData);
+      dynamic result = response.data;
+      print("ApiResponse:::" + result.toString());
       if (response.statusCode == 200) {
-        Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-        var data = Totalscore_Model.fromJson(resultData);
-        print("responsedata:::" + data.toJson().toString());
-        if (data.status == "success") {
-          return data;
-        } else {
-          print("No data");
-          return data; // Or handle the failure case as needed
-        }
+        var data = TotalscoreModel.fromJson(result);
+        print("responseData:::" + data.toJson().toString());
+        return data;
       } else {
         print("Request failed with status: ${response.statusCode}");
         return null; // Or handle the failure case as needed
@@ -374,42 +372,41 @@ print(Base.baseURL + Base.Totalscore);
     }
   }
 
-
-  Future<Correctanswer_Model?> correctanswers(String userid) async {
+  Future<CorrectanswerModel?> correctanswers(String userid) async {
     String mToken = await getAuthToken();
     print("API:::title");
     print(userid);
-
     try {
-      var query = {
+      FormData formData = FormData.fromMap({
         "user_id": userid,
-      };
+      });
       print("query");
-      print(query);
-        print(Base.baseURL + Base.correctanswer);
-      Response response = await Dio().get(
+      Response response = await Dio().post(
         Base.baseURL + Base.correctanswer,
-        queryParameters: {
-          "user_id": userid,
-        },
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          'Authorization': mToken,
-        }),
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': mToken,
+          },
+        ),
       );
+      print("userid");
+      print(Base.baseURL + Base.correctanswer);
+      print(userid);
+      print(formData);
+      dynamic result = response.data;
+
+      // Check if response is successful
       if (response.statusCode == 200) {
-        Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-        var data = Correctanswer_Model.fromJson(resultData);
-        print("responsedata:::" + data.toJson().toString());
-        if (data.status == "success") {
+        // Assuming response contains a JSON with a key "status"
+          var data = CorrectanswerModel.fromJson(response.data);
+          print("responseData:::" + data.toString());
           return data;
         } else {
-          print("No data");
-          return data; // Or handle the failure case as needed
-        }
-      } else {
         print("Request failed with status: ${response.statusCode}");
-        return null; // Or handle the failure case as needed
+        // Handle other status messages if needed
+        return null;
       }
     } catch (e) {
       // Handle errors during API call
@@ -422,37 +419,35 @@ print(Base.baseURL + Base.Totalscore);
     String mToken = await getAuthToken();
     print("API:::title");
     print(userid);
-
     try {
-      var query = {
+      FormData formData = FormData.fromMap({
         "user_id": userid,
-      };
+      });
       print("query");
-      print(query);
-        print(Base.baseURL + Base.wronganswer);
-      Response response = await Dio().get(
+      Response response = await Dio().post(
         Base.baseURL + Base.wronganswer,
-        queryParameters: {
-          "user_id": userid,
-        },
-        options: Options(headers: {
-          "Content-Type": "application/json",
-          'Authorization': mToken,
-        }),
+        data: formData,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': mToken,
+          },
+        ),
       );
+      print("userid");
+      print(Base.baseURL + Base.wronganswer);
+      print(userid);
+      print(formData);
+      dynamic result = response.data;
       if (response.statusCode == 200) {
-        Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-        var data = Wronganswer_Model.fromJson(resultData);
-        print("responsedata:::" + data.toJson().toString());
-        if (data.status == "success") {
-          return data;
-        } else {
-          print("No data");
-          return data; // Or handle the failure case as needed
-        }
+        // Assuming response contains a JSON with a key "status"
+        var data = Wronganswer_Model.fromJson(result);
+        print("responseData:::" + data.toString());
+        return data;
       } else {
         print("Request failed with status: ${response.statusCode}");
-        return null; // Or handle the failure case as needed
+        // Handle other status messages if needed
+        return null;
       }
     } catch (e) {
       // Handle errors during API call
@@ -460,6 +455,7 @@ print(Base.baseURL + Base.Totalscore);
       return null;
     }
   }
+
 
   //formdata with json
 
@@ -508,150 +504,6 @@ print(Base.baseURL + Base.Totalscore);
     }
   }
 
-
-  //json with formdata
-  // Future<Insertanswermodel?> insertanswer(String Useridcontroller,
-  //     Questionansweid, mQuestionAnswer
-  //     ) async {
-  //   String mToken = await getAuthToken();
-  //   print("API:::title");
-  //   try {
-  //     String jsonFormat = jsonEncode(mQuestionAnswer);
-  //     var query = {
-  //         "user_id": Useridcontroller,
-  //         "case_study_id": Questionansweid,
-  //         "question_answers": jsonFormat
-  //     };
-  //     print("query");
-  //     print(query);
-  //
-  //     Response response = await Dio().post(
-  //       Base.baseURL + Base.insert,
-  //       queryParameters:
-  //         {
-  //           "user_id": Useridcontroller,
-  //           "case_study_id": Questionansweid,
-  //           "question_answers": jsonFormat
-  //       },
-  //       options: Options(headers: {
-  //         "Content-Type": "application/json",
-  //         'Authorization': mToken,
-  //       }),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-  //       var data = Insertanswermodel.fromJson(resultData);
-  //       print("responsedata:::" + data.toJson().toString());
-  //       if (data.status == true) {
-  //         return data;
-  //       } else {
-  //         print("No data");
-  //         return data; // Or handle the failure case as needed
-  //       }
-  //     } else {
-  //       print("Request failed with status: ${response.statusCode}");
-  //       return null; // Or handle the failure case as needed
-  //     }
-  //   } catch (e) {
-  //     // Handle errors during API call
-  //     print("Error: $e");
-  //     return null;
-  //   }
-  // }
-// Future<Insertanswermodel?> insertanswer(String Useridcontroller,
-//       Questionansweid, mQuestionAnswer
-//       ) async {
-//     String mToken = await getAuthToken();
-//     print("API:::title");
-//     try {
-//       var query = {
-//         "user_id": Useridcontroller,
-//         "case_study_id": Questionansweid,
-//         "question_answers": mQuestionAnswer
-//       };
-//       String jsonFormat = jsonEncode(query);
-//       print("query");
-//       print(jsonFormat);
-//
-//       Response response = await Dio().post(
-//         Base.baseURL + Base.insert,
-//         data: jsonFormat,
-//         options: Options(headers: {
-//           "Content-Type": "application/json",
-//           'Authorization': mToken,
-//         }),
-//       );
-//       if (response.statusCode == 200) {
-//         Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-//         var data = Insertanswermodel.fromJson(resultData);
-//         print("responsedata:::" + data.toJson().toString());
-//         if (data.status == true) {
-//           return data;
-//         } else {
-//           print("No data");
-//           return data; // Or handle the failure case as needed
-//         }
-//       } else {
-//         print("Request failed with status: ${response.statusCode}");
-//         return null; // Or handle the failure case as needed
-//       }
-//     } catch (e) {
-//       // Handle errors during API call
-//       print("Error: $e");
-//       return null;
-//     }
-//   }
-
-  // Future<Insertanswermodel?> insertanswer(String Useridcontroller,
-  //     Questionansweid
-  //     ) async {
-  //   String mToken = await getAuthToken();
-  //   print("API:::title");
-  //   try {
-  //     var query = {
-  //       "user_id":Useridcontroller,
-  //       "case_study_id":Questionansweid,
-  //       "question_id_1":1,
-  //       "user_answer_1":1,
-  //       "question_id_2":2,
-  //       "user_answer_2":1,
-  //       "question_id_3":3,
-  //       "user_answer_3":1,
-  //       "question_id_4":4,
-  //       "user_answer_4":1,
-  //
-  //     };
-  //     print("query");
-  //     print(query);
-  //
-  //     Response response = await Dio().post(
-  //       Base.baseURL + Base.insert,
-  //       data: query,
-  //       options: Options(headers: {
-  //         "Content-Type": "application/x-www-form-urlencoded",
-  //         'Authorization': mToken,
-  //       }),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-  //       var data = Insertanswermodel.fromJson(resultData);
-  //       print("responsedata:::" + data.toJson().toString());
-  //       if (data.status == true) {
-  //         return data;
-  //       } else {
-  //         print("No data");
-  //         return data; // Or handle the failure case as needed
-  //       }
-  //     } else {
-  //       print("Request failed with status: ${response.statusCode}");
-  //       return null; // Or handle the failure case as needed
-  //     }
-  //   } catch (e) {
-  //     // Handle errors during API call
-  //     print("Error: $e");
-  //     return null;
-  //   }
-  // }
 
   Future<Addcasestudymodel?> addcasequestion(String Useridcontroller,
       String casecontroller,
@@ -754,148 +606,6 @@ print(Base.baseURL + Base.Totalscore);
     }
   }
 
-  // // AddquestionModel
-  // Future<AddquestionModel?> addquestion(String Useridcontroller,
-  // mainquestion1,
-  // mainquestion2,
-  // mainquestion3,
-  // mainquestion4,
-  // correctaswer1,
-  // correctaswer2,
-  // correctaswer3,
-  // correctaswer4,
-  // firstoption1,
-  // firstoption2,
-  // firstoption3,
-  // firstoption4,
-  // secondoption1,
-  // secondoption2,
-  // secondoption3,
-  // secondoption4,
-  // thirdoption1,
-  // thirdoption2,
-  // thirdoption3,
-  // thirdoption4,
-  // fourthoption1,
-  // fourthoption2,
-  // fourthoption3,
-  // fourthoption4,) async {
-  //   String mToken = await getAuthToken();
-  //   print("API:::title");
-  //   try {
-  //     // String jsonFormat = jsonEncode(mQuestionAnswer);
-  //     var query = {
-  //         "caseStudyID": Useridcontroller,
-  //         "questions": [
-  //           {
-  //             "questionID": 1,
-  //             "question": mainquestion1,
-  //             "option1": firstoption1,
-  //             "option2": firstoption2,
-  //             "option3": firstoption3,
-  //             "option4": firstoption4,
-  //             "correctAnswer": correctaswer1
-  //           },
-  //           {
-  //             "questionID": 2,
-  //             "question": mainquestion2,
-  //             "option1": secondoption1,
-  //             "option2": secondoption2,
-  //             "option3": secondoption3,
-  //             "option4": secondoption4,
-  //             "correctAnswer": correctaswer2
-  //           },
-  //           {
-  //             "questionID": 3,
-  //             "question": mainquestion3,
-  //             "option1": thirdoption1,
-  //             "option2": thirdoption2,
-  //             "option3": thirdoption3,
-  //             "option4": thirdoption4,
-  //             "correctAnswer": correctaswer3
-  //           },
-  //           {
-  //             "questionID": 4,
-  //             "question": mainquestion4,
-  //             "option1": fourthoption1,
-  //             "option2": fourthoption2,
-  //             "option3": fourthoption3,
-  //             "option4": fourthoption4,
-  //             "correctAnswer": correctaswer4
-  //           }
-  //         ]
-  //     };
-  //     print("query");
-  //     print(query);
-  //     Response response = await Dio().post(
-  //       Base.baseURL + Base.insert_question,
-  //       queryParameters:
-  //       {
-  //         "caseStudyID": Useridcontroller,
-  //         "questions": [
-  //           {
-  //             "questionID": 1,
-  //             "question": mainquestion1,
-  //             "option1": firstoption1,
-  //             "option2": firstoption2,
-  //             "option3": firstoption3,
-  //             "option4": firstoption4,
-  //             "correctAnswer": correctaswer1
-  //           },
-  //           {
-  //             "questionID": 2,
-  //             "question": mainquestion2,
-  //             "option1": secondoption1,
-  //             "option2": secondoption2,
-  //             "option3": secondoption3,
-  //             "option4": secondoption4,
-  //             "correctAnswer": correctaswer2
-  //           },
-  //           {
-  //             "questionID": 3,
-  //             "question": mainquestion3,
-  //             "option1": thirdoption1,
-  //             "option2": thirdoption2,
-  //             "option3": thirdoption3,
-  //             "option4": thirdoption4,
-  //             "correctAnswer": correctaswer3
-  //           },
-  //           {
-  //             "questionID": 4,
-  //             "question": mainquestion4,
-  //             "option1": fourthoption1,
-  //             "option2": fourthoption2,
-  //             "option3": fourthoption3,
-  //             "option4": fourthoption4,
-  //             "correctAnswer": correctaswer4
-  //           }
-  //         ]
-  //       },
-  //       options: Options(headers: {
-  //         "Content-Type": "application/json",
-  //         'Authorization': mToken,
-  //       }),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> resultData = response.data as Map<String, dynamic>;
-  //       var data = AddquestionModel.fromJson(resultData);
-  //       print("responsedata:::" + data.toJson().toString());
-  //       if (data.status == "success") {
-  //         return data;
-  //       } else {
-  //         print("No data");
-  //         return data; // Or handle the failure case as needed
-  //       }
-  //     } else {
-  //       print("Request failed with status: ${response.statusCode}");
-  //       return null; // Or handle the failure case as needed
-  //     }
-  //   } catch (e) {
-  //     // Handle errors during API call
-  //     print("Error: $e");
-  //     return null;
-  //   }
-  // }
 
   Future<AddquestionModel?> addquestion(String Useridcontroller,
       mainquestion1,
