@@ -27,6 +27,7 @@ class Base{
   static Color primaryColor = Color(0xff31AFF9);
 
 
+
   // static String baseUrl_hr ="";
 
 
