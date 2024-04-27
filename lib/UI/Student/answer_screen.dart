@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mediquizpro/Model/insert_answer.dart';
 import 'package:mediquizpro/UI/Student/Totalscore_Screen.dart';
-
 import '../../API_services/Api_Services.dart';
 import '../../Model/History_Question.dart';
+import '../../Model/timermodel.dart';
 import '../../Utils/base.dart';
 import '../../Utils/shared_preference.dart';
 import '../../Utils/utils.dart';
@@ -18,6 +17,7 @@ String? Useranswer1;
 String? Useranswer2;
 String? Useranswer3;
 String? Useranswer4;
+int? Useranswer = 0;
 class Casestudy_screen2 extends StatefulWidget {
   const Casestudy_screen2({Key? key}) : super(key: key);
 
@@ -32,23 +32,25 @@ class _Casestudy_screen2State extends State<Casestudy_screen2> {
   HistoryQuestion_Model? cHistoryQuestion_Model;
   List<TextEditingController>? _controllers;
   List<Data>? questionlist;
+  TimerModel? cTimerModel;
+  int? timelefts;
 
   // List<Data>? questionid;
   bool isLoading = false;
   Data? currentQuestion;
   int currentIndex = 0;
   TextEditingController Useridcontroller = TextEditingController();
-Insertanswermodel? cInsertanswermodel;
+  Insertanswermodel? cInsertanswermodel;
   List<QuestionAnswer>? mQuestionAnswer=[];
   QuestionAnswer? mSelectedanswer;
   ChapterGrouplistModel? mChapterGrouplistModel;
-bool manualSubmission = false;
+  bool manualSubmission = false;
 
   @override
   void initState() {
     super.initState();
-    // QuestionMainAPI();
     bioIdFunction();
+
   }
 
   void bioIdFunction() async {
@@ -69,7 +71,7 @@ bool manualSubmission = false;
     setState(() {});
     ApiServices()
         .insertanswer(
-      Useridcontroller.text,
+        Useridcontroller.text,
         Caseid,
         mQuestionAnswer).then((value) {
       if (value != null && (value!.status! == "success")) {
@@ -79,7 +81,9 @@ bool manualSubmission = false;
         print("objecdvvdvbdbvfvbt");
         print(Caseid);
         toastMessage(context, value!.message!.toString(), Colors.green);
-
+        for (int i = 0; i < mQuestionAnswer!.length; i++) {
+          mQuestionAnswer![i].userAnswer = "0";
+        }
       } else {
 
         toastMessage(context, "Something went wrong", Colors.red);
@@ -88,6 +92,34 @@ bool manualSubmission = false;
       isLoading = false;
       setState(() {});
     });
+  }
+
+  TimeAPI() async {
+    try {
+      isLoading = true;
+      setState(() {});
+      // Uncomment the API call
+      ApiServices().timingleft().then((value) {
+        if (value != null) {
+          print("login");
+          print(value);
+          setState(() {
+            cTimerModel = value;
+            timelefts = cTimerModel!.timer;
+            _startTimer();
+            print("timelefts");
+            print(timelefts);
+            // toastMessage(context, value!.status.toString(), Colors.green);
+          });
+        } else {
+          toastMessage(context, "Something went wrong", Colors.red);
+        }
+        isLoading = false;
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   QuestionMainAPI() async {
@@ -107,11 +139,11 @@ bool manualSubmission = false;
           // if(currentQuestion!.id != null)
           print("mSelectedanswer");
           print(mSelectedanswer);
+          mQuestionAnswer!.clear();
           if(currentQuestion!.subQuestions !=null) {
             for (int i = 0; i < currentQuestion!.subQuestions!.length; i++) {
               // var Data =mQuestionAnswer![i].questionId![i].isEmpty;
-              mQuestionAnswer!.add(
-                  QuestionAnswer(questionId: currentQuestion!.subQuestions![i].questionId.toString(), userAnswer: "0"));
+              mQuestionAnswer!.add(QuestionAnswer(questionId: currentQuestion!.subQuestions![i].questionId.toString(), userAnswer: Useranswer !=null ? Useranswer.toString() : "0"));
               selectedOptionIdForSubQuestion!.add(0);
               print(selectedOptionIdForSubQuestion!.length);
               print("selectedOptionIdForSubQuestion");
@@ -126,7 +158,9 @@ bool manualSubmission = false;
         print("questionlist");
         print(questionlist);
         toastMessage(context, value!.message!.toString(), Colors.green);
-        _startTimer();
+
+        TimeAPI();
+
       }
       else {
         toastMessage(
@@ -142,29 +176,186 @@ bool manualSubmission = false;
   }
 
 
+  // void _startTimer() {
+  //   // _timer.cancel();
+  //   // _timeLeft = 180;
+  //   _timeLeft = timelefts!.toInt();
+  //   print("_timeLeft");
+  //   print(_timeLeft);
+  //
+  //   _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     if (_timeLeft > 0) {
+  //       setState(() {
+  //         _timeLeft--;
+  //       });
+  //     } else {
+  //       _timer.cancel(); // Stop the timer when time is up
+  //       if (!_automaticSubmission) {
+  //         cHistoryQuestion_Model!.data!.length - 1 == currentIndex
+  //             ? _handleSubmit() :
+  //         next();
+  //         // Pass false for manual submission
+  //       }
+  //     }
+  //   });
+  // }
   void _startTimer() {
-    // _timer.cancel();
-    _timeLeft = 60;
+    _timeLeft = timelefts!.toInt();
+    print("_timeLeft");
+    print(_timeLeft);
+
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_timeLeft > 0) {
+      if (_timeLeft > 2) {
         setState(() {
           _timeLeft--;
         });
       } else {
         _timer.cancel(); // Stop the timer when time is up
         if (!_automaticSubmission) {
-          cHistoryQuestion_Model!.data!.length - 1 == currentIndex
-              ? _handleSubmit() :
-          next();
-          // Pass false for manual submission
+          // Check if there are more questions
+          if (currentIndex < cHistoryQuestion_Model!.data!.length - 1) {
+            // for (int i = 0; i < mQuestionAnswer!.length; i++) {
+            //   mQuestionAnswer![i].userAnswer = "0";
+            // }
+            next1();
+            _startTimer1(); // Start the timer again for the next question
+          } else {
+            // If it's the last question, submit the answers
+            _handleSubmit();
+          }
+        }
+      }
+    });
+  }
+  void _startTimer1() {
+    _timeLeft = 2;
+    print("_timeLeft");
+    print(_timeLeft);
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_timeLeft > 1) {
+        setState(() {
+          _timeLeft--;
+        });
+      } else {
+        _timer.cancel(); // Stop the timer when time is up
+        if (!_automaticSubmission) {
+          // Check if there are more questions
+          if (currentIndex < cHistoryQuestion_Model!.data!.length - 1) {
+            // for (int i = 0; i < mQuestionAnswer!.length; i++) {
+            //   mQuestionAnswer![i].userAnswer = "0";
+            // }
+            next1();
+            _startTimer1(); // Start the timer again for the next question
+          } else {
+            // If it's the last question, submit the answers
+            _handleSubmit();
+          }
         }
       }
     });
   }
 
+  // void next1() {
+  //   Answermain();
+  //   // Reset selectedOptionIdForSubQuestion to deselect radio buttons
+  //   currentIndex = currentIndex + 1;
+  //   setState(() {
+  //     selectedOptionIdForSubQuestion = List.generate(currentQuestion!.subQuestions!.length, (index) => 0);
+  //   });
+  //   setState(() {
+  //     // _startTimer();
+  //     // _timeLeft = 60;
+  //   });
+  //
+  //   print(currentIndex);
+  //   currentQuestion = cHistoryQuestion_Model!.data![currentIndex];
+  //   Caseid="";
+  //   Caseid = currentQuestion!.id.toString();
+  //   print(Caseid);
+  //   print(currentQuestion);
+  // }
+
+  void next1() {
+    Answermain();
+
+    // Reset selectedOptionIdForSubQuestion and mQuestionAnswer
+    setState(() {
+      // for (int i = 0; i < currentQuestion!.subQuestions!.length; i++) {
+      //   currentQuestion!.subQuestions![i].correctAnswer = 0;
+      // }
+      selectedOptionIdForSubQuestion = List.generate(currentQuestion!.subQuestions!.length, (index) => 0);
+    });
+
+    // Move to the next question
+    currentIndex = currentIndex + 1;
+
+    print(currentIndex);
+    currentQuestion = cHistoryQuestion_Model!.data![currentIndex];
+    Caseid = currentQuestion!.id.toString();
+    print(Caseid);
+    print(currentQuestion);
+  }
+
+  // Implement your next question logic here
+  // For example, increment currentIndex
+  // Answermain();
+  // currentIndex++;
+
+
+
+  // void _handleSubmit() {
+  //   print('Submitted!');
+  //   _timer.cancel();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Stack(
+  //         children: [
+  //           // Modal barrier to prevent interactions with widgets behind the dialog
+  //           ModalBarrier(
+  //             dismissible: false,
+  //             color: Colors.black54,
+  //           ),
+  //           Theme(
+  //             data: ThemeData.light().copyWith(
+  //               dialogBackgroundColor: Colors.grey.shade200,
+  //             ),
+  //             child: AlertDialog(
+  //               title: Text(
+  //                 "Test Finished",
+  //                 style: TextStyle(fontSize: Base.titlefont),
+  //               ),
+  //               content: Text("Test Finished Successfully"),
+  //               actions: [
+  //                 TextButton(
+  //                   child: Text(
+  //                     'OK',
+  //                     style: TextStyle(color: Base.primaryColor),
+  //                   ),
+  //                   onPressed: () {
+  //                     Navigator.pushReplacement(
+  //                       context,
+  //                       MaterialPageRoute(
+  //                         builder: (context) => Totalscore_Mainscreen(),
+  //                       ),
+  //                     );
+  //                   },
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
   void _handleSubmit() {
     print('Submitted!');
     _timer.cancel();
+    // Submit answers before showing the dialog
+    Answermain();
 
     showDialog(
       context: context,
@@ -224,7 +415,7 @@ bool manualSubmission = false;
     (remainingSeconds < 10) ? '0$remainingSeconds' : '$remainingSeconds';
     return '$minutesStr:$secondsStr';
   }
-List<int>? selectedOptionIdForSubQuestion=[];
+  List<int>? selectedOptionIdForSubQuestion=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -307,57 +498,119 @@ List<int>? selectedOptionIdForSubQuestion=[];
                               return Column(
                                 children: [
                                   SizedBox(height: 15),
-                                  Row(
-                                    children: [
-                                      SizedBox(width: 25),
-                                      // Checkbox(
-                                      //   value: selectedOptionIdForSubQuestion![index] == option.optionId,
-                                      //   onChanged: (bool? checked) {
-                                      //     setState(() {
-                                      //       if (checked!) {
-                                      //         // Update the selected option ID for the current sub-question
-                                      //         selectedOptionIdForSubQuestion![index] = option.optionId!;
-                                      //         // Set the selected option in the question answer list
-                                      //         mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
-                                      //         mQuestionAnswer![index].userAnswer = option.optionId.toString();
-                                      //       } else {
-                                      //         // If unchecked, remove the selected option
-                                      //         selectedOptionIdForSubQuestion![index] = 0;
-                                      //         // Clear the selected option in the question answer list
-                                      //         mQuestionAnswer![index].userAnswer = "0";
-                                      //       }
-                                      //     });
-                                      //   },
-                                      // ),
-                                      Radio<int?>(
-                                        value: option.optionId,
-                                        groupValue: selectedOptionIdForSubQuestion![index],
-                                        onChanged: (int? value) {
+                                  // Row(
+                                  //   children: [
+                                  //     SizedBox(width: 25),
+                                  //     // Checkbox(
+                                  //     //   value: selectedOptionIdForSubQuestion![index] == option.optionId,
+                                  //     //   onChanged: (bool? checked) {
+                                  //     //     setState(() {
+                                  //     //       if (checked!) {
+                                  //     //         // Update the selected option ID for the current sub-question
+                                  //     //         selectedOptionIdForSubQuestion![index] = option.optionId!;
+                                  //     //         // Set the selected option in the question answer list
+                                  //     //         mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                  //     //         mQuestionAnswer![index].userAnswer = option.optionId.toString();
+                                  //     //       } else {
+                                  //     //         // If unchecked, remove the selected option
+                                  //     //         selectedOptionIdForSubQuestion![index] = 0;
+                                  //     //         // Clear the selected option in the question answer list
+                                  //     //         mQuestionAnswer![index].userAnswer = "0";
+                                  //     //       }
+                                  //     //     });
+                                  //     //   },
+                                  //     // ),
+                                  //     Radio<int?>(
+                                  //       value: option.optionId,
+                                  //       groupValue: selectedOptionIdForSubQuestion![index],
+                                  //       onChanged: (int? value) {
+                                  //
+                                  //         setState(() {
+                                  //           // Update the selected option ID for the current sub-question
+                                  //           selectedOptionIdForSubQuestion![index] = value!;
+                                  //           // subQuestion.selectedOptionId = value; // Update the selected option ID in the sub-question
+                                  //           print("Selected option ID for sub-question ${subQuestion.questionId}: $value");
+                                  //           mQuestionAnswer![index].questionId=subQuestion.questionId.toString();
+                                  //           mQuestionAnswer![index].userAnswer= value.toString() ?? "0" ;
+                                  //           // mQuestionAnswer![index].userAnswer= "0" ;
+                                  //           option.selectedOptions?[subQuestion.questionId!] = value!;
+                                  //           Useranswer1=value.toString();
+                                  //           print("value++++");
+                                  //           print(subQuestion
+                                  //               .questionId!);
+                                  //           print(option.selectedOptions?[subQuestion
+                                  //               .questionId!]);
+                                  //           print(currentQuestion!.id);
+                                  //           print(value);
+                                  //           print("value");
+                                  //         });
+                                  //       },
+                                  //     ),
+                                  //     SizedBox(width: 5),
+                                  //     Text(option.optionDesc ?? "No Description"),
+                                  //   ],
+                                  // ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedOptionIdForSubQuestion![index] = option.optionId!;
+                                        mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                        mQuestionAnswer![index].userAnswer = option.optionId.toString();
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        SizedBox(width: 25),
+                                        Radio<int?>(
+                                          value: option.optionId,
+                                          groupValue: selectedOptionIdForSubQuestion![index],
+                                          onChanged: (int? value) {
+                                            setState(() {
+                                              if (value != null) {
+                                                selectedOptionIdForSubQuestion![index] = value;
+                                                mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                                mQuestionAnswer![index].userAnswer = value.toString();
+                                              } else {
+                                                selectedOptionIdForSubQuestion![index] = 0;
+                                                mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                                mQuestionAnswer![index].userAnswer = "0";
+                                              }
+                                            });
+                                          },
 
-                                          setState(() {
-                                            // Update the selected option ID for the current sub-question
-                                            selectedOptionIdForSubQuestion![index] = value!;
-                                            // subQuestion.selectedOptionId = value; // Update the selected option ID in the sub-question
-                                            print("Selected option ID for sub-question ${subQuestion.questionId}: $value");
-                                            mQuestionAnswer![index].questionId=subQuestion.questionId.toString();
-                                            mQuestionAnswer![index].userAnswer=value.toString() ;
-                                            option.selectedOptions?[subQuestion.questionId!] = value!;
-                                            Useranswer1=value.toString();
-                                            print("value++++");
-                                            print(subQuestion
-                                                .questionId!);
-                                            print(option.selectedOptions?[subQuestion
-                                                .questionId!]);
-                                            print(currentQuestion!.id);
-                                            print(value);
-                                            print("value");
-                                          });
-                                        },
-                                      ),
-                                      SizedBox(width: 5),
-                                      Text(option.optionDesc ?? "No Description"),
-                                    ],
-                                  ),
+                                          // onChanged: (int? value) {
+                                          //   setState(() {
+                                          //     selectedOptionIdForSubQuestion![index] = value!;
+                                          //     mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                          //     mQuestionAnswer![index].userAnswer = value.toString() ?? "0";
+                                          //   });
+                                          // },
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(option.optionDesc ?? "No Description"),
+                                      ],
+                                    ),
+
+                                    //   Row(
+                                    //   children: [
+                                    //     SizedBox(width: 25),
+                                    //     Radio<int?>(
+                                    //       value: option.optionId,
+                                    //       groupValue: selectedOptionIdForSubQuestion![index],
+                                    //       onChanged: (int? value) {
+                                    //         setState(() {
+                                    //           selectedOptionIdForSubQuestion![index] = value!;
+                                    //           mQuestionAnswer![index].questionId = subQuestion.questionId.toString();
+                                    //           mQuestionAnswer![index].userAnswer = value.toString() ?? "0";
+                                    //         });
+                                    //       },
+                                    //     ),
+                                    //     SizedBox(width: 5),
+                                    //     Text(option.optionDesc ?? "No Description"),
+                                    //   ],
+                                    // ),
+                                  )
+
                                 ],
                               );
                             },
@@ -435,7 +688,7 @@ List<int>? selectedOptionIdForSubQuestion=[];
         ),
       ),
       bottomSheet: cHistoryQuestion_Model == null ?
-          loaderWidget()
+      loaderWidget()
           :Container(
         width: MediaQuery
             .of(context)
@@ -476,8 +729,8 @@ List<int>? selectedOptionIdForSubQuestion=[];
             next();
             // currentIndex = currentIndex + 1;
             // setState(() {
-              // _startTimer();
-              _timeLeft = 60;
+            // _startTimer();
+            // _timeLeft = 60;
             // });
             // print(currentIndex);
             // currentQuestion = cHistoryQuestion_Model!.data![currentIndex];
@@ -486,6 +739,9 @@ List<int>? selectedOptionIdForSubQuestion=[];
             String jsonFormat = jsonEncode(mQuestionAnswer);
             print(jsonFormat);
             print(mQuestionAnswer);
+            // for (int i = 0; i < mQuestionAnswer!.length; i++) {
+            //   mQuestionAnswer![i].userAnswer = "0";
+            // }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF434B90),
@@ -498,16 +754,15 @@ List<int>? selectedOptionIdForSubQuestion=[];
 
   void next() {
     Answermain();
-      // Reset selectedOptionIdForSubQuestion to deselect radio buttons
+    // Reset selectedOptionIdForSubQuestion to deselect radio buttons
     currentIndex = currentIndex + 1;
     setState(() {
       selectedOptionIdForSubQuestion = List.generate(currentQuestion!.subQuestions!.length, (index) => 0);
     });
     setState(() {
       // _startTimer();
-      _timeLeft = 60;
+      // _timeLeft = 60;
     });
-
     print(currentIndex);
     currentQuestion = cHistoryQuestion_Model!.data![currentIndex];
     Caseid="";
@@ -515,9 +770,9 @@ List<int>? selectedOptionIdForSubQuestion=[];
     print(Caseid);
     print(currentQuestion);
   }
+
   void submit(){
     Answermain();
-
   }
 
 
@@ -557,8 +812,8 @@ class QuestionAnswer {
     required this.userAnswer,
   });
 
-   String? questionId;
-   String? userAnswer;
+  String? questionId;
+  String? userAnswer;
 
   factory QuestionAnswer.fromJson(Map<String, dynamic> json){
     return QuestionAnswer(

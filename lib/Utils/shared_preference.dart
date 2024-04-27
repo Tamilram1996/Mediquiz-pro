@@ -55,11 +55,16 @@ setUserName(String data,String Password) async {
   prefs.setString('userName', data);
   prefs.setString('Password', Password);
 }
+setstudent(String data) async {
+  print("designation" + data);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('designation', data);
+}
 
 Future<String> getUserName() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   if (prefs.getString('userName') != null && prefs.getString('Password') != null &&
-  prefs.getString('userName')!.isNotEmpty) {
+      prefs.getString('userName')!.isNotEmpty) {
     print("userName" + prefs.getString('userName').toString());
     print("Password" + prefs.getString('Password').toString());
   } else {
@@ -69,10 +74,26 @@ Future<String> getUserName() async {
       ? prefs.getString('userName').toString()
       : "";
 }
+Future<String> getstudent() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString('designation') != null  &&
+      prefs.getString('designation')!.isNotEmpty) {
+    print("designation" + prefs.getString('designation').toString());
+  } else {
+    print("designation is  Empty");
+  }
+  return prefs.getString('designation') != null ? prefs.getString('designation').toString()
+      : "";
+}
 Future<void> clearAuthToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('userName') && await prefs.remove('Password');
+  // await prefs.remove('token');
 }
+// Future<void> clearuserToken() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.remove('token');
+// }
 Future<void> logout() async {
 // Clear the authentication token
   await clearAuthToken();
@@ -82,3 +103,4 @@ Future<void> logout() async {
 // Example: navigate to the login screen
 // Navigator.pushReplacementNamed(context, '/login');
 }
+

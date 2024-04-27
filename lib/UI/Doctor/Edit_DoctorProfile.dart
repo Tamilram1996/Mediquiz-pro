@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mediquizpro/API_services/Api_Services.dart';
 import 'package:mediquizpro/Model/EditDoctorProfile_Model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mediquizpro/UI/Doctor/Doctor_Profile.dart';
 import '../../Model/Profile_Model.dart';
+import '../../Model/profilephotoModel.dart';
 import '../../Utils/shared_preference.dart';
 import '../../Utils/utils.dart';
 
@@ -27,10 +29,10 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
   TextEditingController designationcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController re_passwordcontroller = TextEditingController();
-  File? _selectedFileImage;
+  File? _selectedFileImage ;
   String? _selectedImage;
   EditDoctorProfile_Model? cEditDoctorProfile_Model;
-
+  ProfilephotoModel? cProfilephotoModel;
 
   @override
   void initState() {
@@ -41,7 +43,7 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
   void bioIdFunction() async {
     isLoading = true;
     setState(() {});
-    // userid = await Getuserid();
+    userid = await Getuserid();
     userid = await getUserName();
     Useridcontroller.text = userid.toString();
     namecontroller.text = widget!.data!.name.toString();
@@ -52,6 +54,7 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
     passwordcontroller.text = widget!.data!.password.toString();
     re_passwordcontroller.text = widget!.data!.password.toString();
     _selectedImage = widget!.data!.profilePhoto.toString();
+    // _selectedFileImage =
 
     print("edituserid");
     print(userid);
@@ -59,6 +62,13 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
       isLoading = false;
     });
   }
+  void reloadProfilePage() {
+    setState(() {
+      isLoading = true; // Set isLoading to true to show the loader
+    });
+    bioIdFunction(); // Call the function to reload the profile data
+  }
+
 
   EditprofileAPI() {
     isLoading = true;
@@ -78,12 +88,24 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
     ).then((value) {
       print(value);
       print("value");
-        cEditDoctorProfile_Model = value;
+      cEditDoctorProfile_Model = value;
       if (cEditDoctorProfile_Model?.status == "success") {
+        setState(() {
+          _selectedImage = _selectedImage; // Get the URL from the response
+        });
         print("login");
         print(value);
         // Navigator.pop(context,true);
-        Navigator.pop(context,true);
+        // reloadProfilePage() ;//
+        // Navigator.pop(context,true);
+        // Navigator.pop(context,_selectedImage);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>Doctor_Profile(),
+          ),
+        );
+        // Navigator.pop(context,true);
         toastMessage(context, "User information updated successfully", Colors.green);
       } else {
         print("value");
@@ -96,6 +118,58 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
     });
   }
 
+  // Photomain() {
+  //   isLoading = true;
+  //   setState(() {
+  //   });
+  //   ApiServices()
+  //       .photoupload(
+  //     Useridcontroller.text,
+  //     _selectedFileImage,
+  //   )
+  //       .then((value) {
+  //     if (value != null && (value!.status! == "success")) {
+  //       print("login");
+  //       print(value);
+  //       cProfilephotoModel = value;
+  //       print("object");
+  //       toastMessage(context,value.message.toString() , Colors.green);
+  //     } else {
+  //       // toastMessage(context, value!.message!.toString(), Colors.red);
+  //       toastMessage(context, "Something went wrong", Colors.red);
+  //     }
+  //     isLoading = false;
+  //     setState(() {});
+  //   });
+  // }
+  // Photomain() {
+  //   isLoading = true;
+  //   setState(() {});
+  //   ApiServices()
+  //       .photoupload(
+  //     Useridcontroller.text,
+  //     _selectedFileImage,
+  //   )
+  //       .then((value) {
+  //     if (value != null && (value.status! == "success")) {
+  //       print("login");
+  //       print(value);
+  //       cProfilephotoModel = value;
+  //       print("object");
+  //       toastMessage(context, value.message.toString(), Colors.green);
+  //     } else {
+  //       // toastMessage(context, value.message.toString(), Colors.red);
+  //       toastMessage(context, "Something went wrong", Colors.red);
+  //     }
+  //     isLoading = false;
+  //     setState(() {});
+  //   }).catchError((error) {
+  //     print("Error in photo upload: $error");
+  //     // Handle the error case appropriately
+  //     isLoading = false;
+  //     setState(() {});
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +226,8 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
                 ),
               ],
             ),
-        
-        
+
+
             SizedBox(height: 20,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -294,8 +368,8 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
             }
           },
           style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        backgroundColor: Color(0xFF434B90),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            backgroundColor: Color(0xFF434B90),
           ),
         ),
       ),
@@ -337,8 +411,7 @@ class _Edit_DoctorProfileState extends State<Edit_DoctorProfile> {
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedImage =
-    await picker.pickImage(source: source, imageQuality: 50);
+    final pickedImage = await picker.pickImage(source: source, imageQuality: 50);
     if (pickedImage != null) {
       setState(() {
         _selectedFileImage = File(pickedImage.path);

@@ -40,14 +40,14 @@ class _Doctor_LoginState extends State<Doctor_Login> {
         cLogin_Model = value;
         setUserName(Usernamecontroller.text.toString(),Passwordcontroller.text.toString());
         Setuser(Usernamecontroller.text.toString());
+
         designation = cLogin_Model!.data!.designation;
+        setstudent(designation.toString());
         print(Setuser);
         print("object");
         print(designation);
-        if(cLogin_Model!.data!.designation == "Student") {
-          toastMessage(context, "Use Doctor id to login", Colors.red);
-        }
-        else if(cLogin_Model!.data!.designation == "Doctor") {
+        if(cLogin_Model!.data!.designation == "Doctor") {
+          print("DoctorLogin");
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -55,6 +55,10 @@ class _Doctor_LoginState extends State<Doctor_Login> {
             ),
           );
         }
+        // if(cLogin_Model!.data!.designation == "Student") {
+        // else{
+        //   toastMessage(context, "Use Doctor id to login", Colors.red);
+        // }
       }
       else {
         toastMessage(context, value!.message!.toString(), Colors.red);

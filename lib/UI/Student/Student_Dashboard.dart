@@ -70,220 +70,237 @@ class _Student_DashboardState extends State<Student_Dashboard> {
         drawer: Container(
           width: MediaQuery.of(context).size.width/1.7, // Half the screen width
           height: MediaQuery.of(context).size.height/1.1,
-      child: ClipRRect(
-      borderRadius: BorderRadius.only(
-      topRight: Radius.circular(30.0), // Adjust the radius as needed
-      bottomRight: Radius.circular(30.0), // Adjust the radius as needed
-      ),
-          child: Drawer(
-            backgroundColor:Color(0xFF434B90),
-        child: ListView.builder(
-      itemCount: namelist.length,
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () async {
-            if(namelist![index] == "Profile") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      Doctor_Profile(),
-                ),
-              );
-            }
-           else if(namelist![index] == "Leader Board") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      leaderboard(),
-                ),
-              );
-            }
-            else if(namelist![index] == "Score") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      Drwaer_Totalscore(),
-                ),
-              );
-            }
-            else if(namelist![index] == "Review answer") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      DrawerReview_screen(),
-                ),
-              );
-            }
-            else if (namelist![index] == "Logout") {
-              logout();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      Splashscreen(),
-                ),
-              );
-            }
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30.0), // Adjust the radius as needed
+              bottomRight: Radius.circular(30.0), // Adjust the radius as needed
+            ),
+            child: Drawer(
+                backgroundColor:Color(0xFF434B90),
+                child: ListView.builder(
+                    itemCount: namelist.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if(namelist![index] == "Profile") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Doctor_Profile(),
+                              ),
+                            );
+                          }
+                          else if(namelist![index] == "Leader Board") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    leaderboard(),
+                              ),
+                            );
+                          }
+                          else if(namelist![index] == "Score") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Drwaer_Totalscore(),
+                              ),
+                            );
+                          }
+                          else if(namelist![index] == "Review answer") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DrawerReview_screen(),
+                              ),
+                            );
+                          }
+                          else if (namelist![index] == "Logout") {
+                            logout();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Splashscreen(),
+                              ),
+                            );
+                          }
 
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: ListTile(
-              leading: index < imagelist.length
-                  ? Image.asset(
-                                imagelist[index],
-                                width: 50, // Adjust size as needed
-                                height: 50, // Adjust size as needed
-                              )
-                    : null,
-              title: Padding(
-                padding: EdgeInsets.only(bottom: 6.0),
-                child: Text(namelist[index],style: TextStyle(color: Colors.white),),
-              ),
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ListTile(
+                            leading: index < imagelist.length
+                                ? Image.asset(
+                              imagelist[index],
+                              width: 50, // Adjust size as needed
+                              height: 50, // Adjust size as needed
+                            )
+                                : null,
+                            title: Padding(
+                              padding: EdgeInsets.only(bottom: 6.0),
+                              child: Text(namelist[index],style: TextStyle(color: Colors.white),),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                )
             ),
           ),
-        );
-      }
-        )
-          ),
-        ),
         ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 50,),
-                GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Pathology_Screen()
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 50,),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Pathology_Screen()
+                        ),
+                      );
+                      print("object");
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width /1.1,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30), // Adjust the border radius here
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400.withOpacity(0.2), // Shadow color
+                            spreadRadius: 3, // Spread radius
+                            blurRadius: 2, // Blur radius
+                            offset: Offset(10, 0), // Offset of the shadow
+                          ),
+                        ],
                       ),
-                    );
-                    print("object");
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width /1.05,
-                    height: 60,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10), // Adjust the border radius here
+                        child: Center(
+                          child: Text("Pathology",style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1),),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.1,
+                    height: MediaQuery.of(context).size.height/1.5,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10), // Adjust the border radius here
+                      borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.shade400.withOpacity(0.2), // Shadow color
-                          spreadRadius: 3, // Spread radius
-                          blurRadius: 1, // Blur radius
-                          offset: Offset(0, 0), // Offset of the shadow
+                          color: Colors.grey.shade400.withOpacity(0.2),
+                          spreadRadius: 3,
+                          blurRadius: 1,
+                          offset: Offset(10, 0),
                         ),
                       ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10), // Adjust the border radius here
-                      child: Center(
-                        child: Text("Pathology",style: TextStyle(fontWeight: FontWeight.bold,letterSpacing: 1),),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.05,
-                  height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade400.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 1,
-                        offset: Offset(0, 0),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Column(
                         children: [
                           SizedBox(height: 20,),
                           Row(
                             children: [
+                              SizedBox(width: 25,),
                               Icon(Icons.sticky_note_2_outlined,color: Colors.grey),
                               SizedBox(width: 7,),
-                              Text("Instructions",style: TextStyle(fontSize: 18,color: Colors.grey,fontWeight: FontWeight.bold),),
+                              Text("Instructions",style: TextStyle(fontSize: 20,color: Colors.grey,fontWeight: FontWeight.bold),),
                             ],
                           ),
                           SizedBox(height: 10,),
-                          Text("This is a pocket friendly digital based mobile app created for the Pathology postgraduates to self evaluate their knowledge in the field of Dermatopathology."),
+                          Row(
+                            children: [
+                              SizedBox(width:28,),
+                              Expanded(child: Text("This is a pocket friendly digital based mobile app created for the Pathology postgraduates to self evaluate their knowledge in the field of Dermatopathology.",
+                                style: TextStyle(fontSize: 15),)),
+                            ],
+                          ),
                           SizedBox(height: 10,),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Expanded(child: Text("1.A total of 50 case scenarios with related microscopic images are displayed for interpretation.")),
+                              SizedBox(width:40,),
+                              Expanded(child: Text("1.A total of 50 case scenarios with related microscopic images are displayed for interpretation."
+                                  , style: TextStyle(fontSize: 15)
+                              )),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Expanded(child: Text("2.Each case contains 4 related subquestions and each carries 4 marks and the total marks for 200.")),
+                              SizedBox(width:40,),
+                              Expanded(child: Text("2.Each case contains 4 related subquestions and each carries 4 marks and the total marks for 200."
+                                  , style: TextStyle(fontSize: 15)
+                              )),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Text("3.There are no negative markings."),
+                              SizedBox(width:40,),
+                              Expanded(child: Text("3.There are no negative markings.", style: TextStyle(fontSize: 15))),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Text("4.The duration of the test is alloted for 120 minutes."),
+                              SizedBox(width:40,),
+                              Expanded(child: Text("4.The duration of the test is alloted for 120 minutes."
+                                  , style: TextStyle(fontSize: 15))),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:7,),
-                              Text(" 5.Only single attempt is allowed after logging in."),
+                              SizedBox(width:38,),
+                              Expanded(child: Text(" 5.Only single attempt is allowed after logging in."
+                                  , style: TextStyle(fontSize: 15))),
                             ],
                           ),
                           Row(
                             children: [
-                              SizedBox(width:7,),
-                              Text(" 6.Scroll up and down to view the entire page."),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              SizedBox(width:10,),
-                              Text("7.One can review the question and change the answers\n"
-                                  " multiple times but within the alloted time frame."),
+                              SizedBox(width:37,),
+                              Expanded(child: Text(" 6.Scroll up and down to view the entire page."
+                                  , style: TextStyle(fontSize: 15))),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Text("8.On completion of the test,click submit all and exit."),
+                              SizedBox(width:40,),
+                              Expanded(
+                                child: Text("7.One can review the question and change the answers"
+                                    " multiple times but within the alloted time frame."
+                                    , style: TextStyle(fontSize: 15)),
+                              ),
                             ],
                           ),
                           SizedBox(height: 5),
                           Row(
                             children: [
-                              SizedBox(width:10,),
-                              Text("9.The answer key can be viewed and the test scores will\n be displayed in the score card."),
+                              SizedBox(width:40,),
+                              Expanded(child: Text("8.On completion of the test,click submit all and exit."
+                                  , style: TextStyle(fontSize: 15))),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              SizedBox(width:40,),
+                              Expanded(child: Text("9.The answer key can be viewed and the test scores will be displayed in the score card."
+                                  , style: TextStyle(fontSize: 15))),
                             ],
                           ),
                           SizedBox(height: 5),
@@ -291,8 +308,7 @@ class _Student_DashboardState extends State<Student_Dashboard> {
                       ),
                     ),
                   ),
-                ),
-              ]),
+                ]),
           ),
         ),
       ),

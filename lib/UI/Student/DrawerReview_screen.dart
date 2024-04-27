@@ -131,63 +131,63 @@ class _DrawerReview_screenState extends State<DrawerReview_screen>
             matchedAnswerslist!=null ? ListView.builder(
               itemCount: matchedAnswerslist!.length,
               itemBuilder: (context, index) {
-                  var list = matchedAnswerslist![index];
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Card(
-                      color: Colors.grey.shade100,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
+                var list = matchedAnswerslist![index];
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Card(
+                    color: Colors.grey.shade100,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
                                   height:35,
-                                    width:MediaQuery.of(context).size.width/1.2,
-                                    child: SingleChildScrollView(child: Text('${list.caseStudy}' ?? ""))),
-                              ],
-                            ),
-                           SizedBox(height: 15,),
-                            Row(
-                              children: [
-                                Container(
-                                    height:35,
-                                    width:MediaQuery.of(context).size.width/1.17,
-                                    child: SingleChildScrollView(child: Text('${list.question}' ?? ""))),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            Row(
-                              children: [
-                                Container(
-                                    height:35,
-                                    width:MediaQuery.of(context).size.width/1.2,
-                                    child: SingleChildScrollView(child: Text('${list.userAnswer}' ?? ""))),
-                              ],
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Text("Correct",style: TextStyle(color: Colors.green.shade400,fontWeight: FontWeight.bold),),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  width:MediaQuery.of(context).size.width/1.2,
+                                  child: SingleChildScrollView(child: Text('${list.caseStudy}' ?? ""))),
+                            ],
+                          ),
+                          SizedBox(height: 15,),
+                          Row(
+                            children: [
+                              Container(
+                                  height:35,
+                                  width:MediaQuery.of(context).size.width/1.17,
+                                  child: SingleChildScrollView(child: Text('${list.question}' ?? ""))),
+                            ],
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            children: [
+                              Container(
+                                  height:35,
+                                  width:MediaQuery.of(context).size.width/1.2,
+                                  child: SingleChildScrollView(child: Text('${list.userAnswer}' ?? ""))),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text("Correct",style: TextStyle(color: Colors.green.shade400,fontWeight: FontWeight.bold),),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  );
+                  ),
+                );
               },
             ) : Container(child: Center(child: Text("No Data",style: TextStyle(fontSize: 20),)),),
             // Content for the 'Wrong' tab
-    unmatchedAnswerslist!=null ? ListView.builder(
+            unmatchedAnswerslist!=null ? ListView.builder(
               itemCount: unmatchedAnswerslist!.length,
               itemBuilder: (context, index) {
                 if (unmatchedAnswerslist != null && unmatchedAnswerslist!.isNotEmpty) {

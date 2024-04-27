@@ -1,5 +1,6 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-
 import '../../API_services/Api_Services.dart';
 import '../../Model/Sigup_model.dart';
 import '../../Utils/base.dart';
@@ -22,8 +23,10 @@ class _SignUp_screenState extends State<SignUp_screen> {
   TextEditingController createpasswordcontroller = TextEditingController();
   TextEditingController recreatepasswordcontroller = TextEditingController();
   bool isLoading = true;
-  Sigup_Model? cSigup_Model;
+  SigupModel? cSigup_Model;
   List<String>? Designationlist = ["Student", "Doctor"];
+  File? _selectedFileImage;
+  String? _selectedImage;
 
   @override
   void initState() {
@@ -43,13 +46,16 @@ class _SignUp_screenState extends State<SignUp_screen> {
       designationcontroller.text,
       createpasswordcontroller.text,
       recreatepasswordcontroller.text,
+      _selectedFileImage,
     )
         .then((value) {
-      if (value != null && (value!.status! == true)) {
+      if (value != null && (value!.status! == "success")) {
         print("login");
         print(value);
         cSigup_Model = value;
         print("object");
+        toastMessage(context,value.message.toString() , Colors.green);
+        Navigator.pop(context);
       } else {
         // toastMessage(context, value!.message!.toString(), Colors.red);
         toastMessage(context, "Something went wrong", Colors.red);
@@ -74,9 +80,46 @@ class _SignUp_screenState extends State<SignUp_screen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ClipOval(
-              child: RotatingImage(),
+            Stack(
+              children: [
+                ClipOval(
+                  // child: RotatingImage(),
+                  child:_selectedFileImage != null
+                      ? CircleAvatar(
+                    radius: 65,
+                    backgroundImage:
+                    FileImage(_selectedFileImage!),
+                  )
+                      : _selectedImage != null &&
+                      _selectedImage!.isNotEmpty
+                      ? CircleAvatar(
+                      radius: 65,
+                      backgroundImage:
+                      NetworkImage(_selectedImage!))
+                      : CircleAvatar(
+                      radius: 65,
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(
+                          'assets/image 22.png')),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // Add your onPressed logic here
+                        _showImagePickerDialog();
+                      },
+                      child: Icon(Icons.edit),
+                    ),
+                  ),
+                )
+              ],
             ),
+            SizedBox(height: 25,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
@@ -162,7 +205,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
                             Spacer(),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
+                              const EdgeInsets.symmetric(horizontal: 5),
                               child: InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
@@ -185,7 +228,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
                                 onTap: () {
                                   setState(() {
                                     designationcontroller.text =
-                                        Designationlist![index]!;
+                                    Designationlist![index]!;
                                     // print("selected ID:"+_selectedId.toString());
                                   });
                                   Navigator.of(context).pop();
@@ -198,8 +241,8 @@ class _SignUp_screenState extends State<SignUp_screen> {
                                           vertical: 8.0),
                                       child: Container(
                                         width:
-                                            MediaQuery.of(context).size.width /
-                                                1.6,
+                                        MediaQuery.of(context).size.width /
+                                            1.6,
                                         child: Text(
                                           "${Designationlist![index]}",
                                           style: TextStyle(
@@ -223,6 +266,7 @@ class _SignUp_screenState extends State<SignUp_screen> {
                 child: TextField(
                   controller: designationcontroller,
                   enabled: false,
+                  // readOnly: true,
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.arrow_drop_down_circle),
                     hintText: 'Designation',
@@ -309,5 +353,48 @@ class _SignUp_screenState extends State<SignUp_screen> {
         ),
       ),
     );
+  }
+  void _showImagePickerDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choose an option'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('Take Photo'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedImage =
+    await picker.pickImage(source: source, imageQuality: 50);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedFileImage = File(pickedImage.path);
+        _selectedImage = pickedImage.path; // Store image path for network image
+      });
+    }
   }
 }

@@ -67,17 +67,18 @@ class _SplashscreenState extends State<Splashscreen>
     // String authToken = prefs.getString('token') ?? '';
     String userName = prefs.getString('userName') ?? '';
     String password = prefs.getString('Password') ?? '';
+    String designation = prefs.getString('designation') ?? '';
 
     if (userName.isNotEmpty && password.isNotEmpty) {
       // If token and user data exist, navigate to respective dashboard
-      if (isDoctorUser()) {
+      if (designation == "Doctor") {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => Doctor_Dashboard(),
           ),
         );
-      } else {
+      } else  {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -102,7 +103,12 @@ class _SplashscreenState extends State<Splashscreen>
     // Return true if the user is a doctor, false otherwise
     return false; // Placeholder, replace with actual logic
   }
-
+  bool isStudentUser() {
+    // Implement your logic to determine if the user is a doctor or not
+    // For example, you can check if the user's role is 'doctor' in your backend
+    // Return true if the user is a doctor, false otherwise
+    return true; // Placeholder, replace with actual logic
+  }
 
   @override
   Widget build(BuildContext context) {

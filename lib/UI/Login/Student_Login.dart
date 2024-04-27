@@ -19,7 +19,7 @@ class _Student_LoginState extends State<Student_Login> {
   TextEditingController Usernamecontroller = TextEditingController();
   TextEditingController Passwordcontroller = TextEditingController();
   bool isLoading = true;
- Login_Model? cLogin_Model;
+  Login_Model? cLogin_Model;
   Data? datalist;
   String? designation;
   bool obscureText = true;
@@ -41,12 +41,15 @@ class _Student_LoginState extends State<Student_Login> {
         cLogin_Model = value;
         setUserName(Usernamecontroller.text.toString(),Passwordcontroller.text.toString());
         Setuser(Usernamecontroller.text.toString());
+
         print(setUserName);
         designation = cLogin_Model!.data!.designation;
+        setstudent(designation.toString());
         print("object");
         print(designation);
 
         if(cLogin_Model!.data!.designation == "Student") {
+          print("StudentLogin");
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -54,9 +57,11 @@ class _Student_LoginState extends State<Student_Login> {
             ),
           );
         }
-        else if(cLogin_Model!.data!.designation == "Doctor") {
-          toastMessage(context, "Use student id to login", Colors.red);
-        }
+        // else if(cLogin_Model!.data!.designation == "Doctor") {
+
+        //   toastMessage(context, "Use student id to login", Colors.red);
+        // }
+
       }
       else {
         toastMessage(context, value!.message!.toString(), Colors.red);
@@ -73,60 +78,61 @@ class _Student_LoginState extends State<Student_Login> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height/3,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-        Container(
-          height: 25,
-          width: 25,
-            child: Image.asset("assets/image 20.png")),
-        Text("WELCOME TO MEDIQUIZ PRO",style: TextStyle(fontSize: 20)),
-            ],
-          ),
-            SizedBox(height:MediaQuery.of(context).size.height/11),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-        Text("${widget.title}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-            ],
-          ),
-          SizedBox(height: 30,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:40.0),
-            child: TextField(
-        controller: Usernamecontroller,
-        decoration: InputDecoration(
-          // suffixIcon:Icon(Icons.cancel_outlined,color: Colors.blue.shade800),
-          hintText: 'Email or Phone',
-          // labelStyle: TextStyle(color: Colors.white),
-        ),
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height/3,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    height: 25,
+                    width: 25,
+                    child: Image.asset("assets/image 20.png")),
+                Text("WELCOME TO MEDIQUIZ PRO",style: TextStyle(fontSize: 20)),
+              ],
             ),
-          ),
-          SizedBox(height: 20,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-            child: TextField(
-              controller: Passwordcontroller,
-              obscureText: obscureText, // Ensures the text is hidden by default
-              decoration: InputDecoration(
-                hintText: 'Password',
-                suffixIcon: IconButton(
-                  icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility,
-                  ), // Icon for toggling visibility
-                  onPressed: () {
-                    setState(() {
-                      // Toggle the obscureText value to show/hide the password
-                      obscureText = !obscureText;
-                    });
-                  },
+            SizedBox(height:MediaQuery.of(context).size.height/11),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("${widget.title}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+              ],
+            ),
+            SizedBox(height: 30,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:40.0),
+              child: TextField(
+                controller: Usernamecontroller,
+                decoration: InputDecoration(
+                  // suffixIcon:Icon(Icons.cancel_outlined,color: Colors.blue.shade800),
+                  hintText: 'Email or Phone',
+                  // labelStyle: TextStyle(color: Colors.white),
                 ),
               ),
             ),
-          ),
+            SizedBox(height: 20,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: TextField(
+                controller: Passwordcontroller,
+                obscureText: obscureText, // Ensures the text is hidden by default
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility,
+                    ), // Icon for toggling visibility
+                    onPressed: () {
+                      setState(() {
+                        // Toggle the obscureText value to show/hide the password
+                        obscureText = !obscureText;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 60,),
 
-        ],
+          ],
         ),
       ),
       bottomSheet: Row(

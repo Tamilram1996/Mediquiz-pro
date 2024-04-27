@@ -1,18 +1,41 @@
-class StudentList_model {
-  String? userId;
-  String? totalScore;
+class StudentListModel {
+  StudentListModel({
+    required this.data,
+  });
 
-  StudentList_model({this.userId, this.totalScore});
+  final List<Students> data;
 
-  StudentList_model.fromJson(Map<String, dynamic> json) {
-    userId = json['user_id'];
-    totalScore = json['total_score'];
+  factory StudentListModel.fromJson(Map<String, dynamic> json){
+    return StudentListModel(
+      data: json["data"] == null ? [] : List<Students>.from(json["data"]!.map((x) => Students.fromJson(x))),
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this.userId;
-    data['total_score'] = this.totalScore;
-    return data;
+  Map<String, dynamic> toJson() => {
+    "data": data.map((x) => x?.toJson()).toList(),
+  };
+
+}
+
+class Students {
+  Students({
+    required this.userId,
+    required this.totalScore,
+  });
+
+  final String? userId;
+  final String? totalScore;
+
+  factory Students.fromJson(Map<String, dynamic> json){
+    return Students(
+      userId: json["user_id"],
+      totalScore: json["total_score"],
+    );
   }
+
+  Map<String, dynamic> toJson() => {
+    "user_id": userId,
+    "total_score": totalScore,
+  };
+
 }

@@ -132,10 +132,10 @@ class _DoctorGetQuestionState extends State<DoctorGetQuestion> {
                                   SizedBox(height: 25),
                                   Container(
                                     color: Colors.teal,
-                                    height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height / 2,
+                                    // height: MediaQuery
+                                    //     .of(context)
+                                    //     .size
+                                    //     .height / 2,
                                     width: MediaQuery
                                         .of(context)
                                         .size

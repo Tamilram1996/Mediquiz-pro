@@ -15,13 +15,65 @@ class leaderboard extends StatefulWidget {
 
 class _leaderboardState extends State<leaderboard> {
   bool isLoading = true;
-  Leaderboard_model? cLeaderboard_model;
-  String? totalscore;
-  String? UserId;
-  List<String>? imagelist =["assets/1.png","assets/2.png","assets/3.png"];
-  String? dummyimage;
-  List<String> Total = [];
-  List<String> User = [];
+  LeaderboardModel? cLeaderboardmodel;
+  List<leader>? leaderboardscore;
+  // String? totalscore;
+  // String? UserId;
+  // List<String>? imagelist =["assets/1.png",
+  //   "assets/2.png",
+  //   "assets/3.png", "", "", "", "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  //   "",
+  // ];
+  // String? dummyimage;
+  // List<String> Total = [];
+  // List<String> User = [];
 
   @override
   void initState() {
@@ -29,53 +81,29 @@ class _leaderboardState extends State<leaderboard> {
     LeaderBoardAPI();
   }
 
-  LeaderBoardAPI() async {
-    isLoading = true;
-    setState(() {});
-    ApiServices().leaderboard().then((List<Leaderboard_model> value) {
-      if (value.isNotEmpty) {
-        print("login");
-        print(value);
-        setState(() {
-          // Clear previous data
-          Total.clear();
-          User.clear();
-          cLeaderboard_model = value.first; // Assuming you want the first item in the list
-          totalscore = cLeaderboard_model!.totalScore;
-          UserId = cLeaderboard_model!.userId;
-          // Use forEach to iterate over the list
-          value.forEach((item) {
-            Total.add(totalscore!);
-            User.add(UserId!);
-            print("TotalController");
-            print(item.totalScore); // Accessing each item's totalScore
-          });
-          print(totalscore);
-          print("totalscore");
-        });
-      } else {
-        toastMessage(context, "Something went wrong", Colors.red);
-      }
-      isLoading = false;
-      setState(() {});
-    });
-  }
-
   // LeaderBoardAPI() async {
   //   isLoading = true;
   //   setState(() {});
-  //   ApiServices().leaderboard().then((List<Leaderboard_model> value) {
+  //   ApiServices().leaderboard().then((List<LeaderboardModel> value) {
   //     if (value.isNotEmpty) {
+  //       print("login");
+  //       print(value);
   //       setState(() {
   //         // Clear previous data
-  //         TotalController.clear();
-  //         UserController.clear();
-  //
-  //         // Populate UI data for each item in the list
+  //         Total.clear();
+  //         User.clear();
+  //         cLeaderboard_model = value.first; // Assuming you want the first item in the list
+  //         totalscore = cLeaderboard_model!.totalScore;
+  //         UserId = cLeaderboard_model!.userId;
+  //         // Use forEach to iterate over the list
   //         value.forEach((item) {
-  //           TotalController.add(TextEditingController());
-  //           UserController.add(TextEditingController());
+  //           Total.add(totalscore!);
+  //           User.add(UserId!);
+  //           print("TotalController");
+  //           print(item.totalScore); // Accessing each item's totalScore
   //         });
+  //         print(totalscore);
+  //         print("totalscore");
   //       });
   //     } else {
   //       toastMessage(context, "Something went wrong", Colors.red);
@@ -85,6 +113,29 @@ class _leaderboardState extends State<leaderboard> {
   //   });
   // }
 
+  LeaderBoardAPI() async {
+    try {
+      isLoading = true;
+      setState(() {});
+      // Uncomment the API call
+      ApiServices().leaderboard().then((value) {
+        if (value != null) {
+          print("login");
+          print(value);
+          setState(() {
+            cLeaderboardmodel = value;
+            leaderboardscore = cLeaderboardmodel!.data;
+          });
+        } else {
+          toastMessage(context, "Something went wrong", Colors.red);
+        }
+        isLoading = false;
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,37 +178,70 @@ class _leaderboardState extends State<leaderboard> {
               ),
               SizedBox(height: 20,),
               Expanded(
-                child: totalscore != null ? Padding(
+                child: leaderboardscore != null ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: Total?.length,
+                    itemCount: leaderboardscore!.length,
                     itemBuilder: (BuildContext context, int index) {
                       print("length");
-                      var score = Total![index];
-                      var id = User![index];
-                      var overimage = imagelist![index];
+                      // var overimage = imagelist![index];
+                      var item =leaderboardscore![index];
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal:0,vertical:6),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // Column(
+                            //   children: [
+                            //     Visibility(
+                            //       child:ClipOval(
+                            //         child: Container(
+                            //           height:40,
+                            //           width: 35,
+                            //           child: Image.network(item!.rankImage!,
+                            //             height:35,
+                            //             width: 35,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       visible:  index < 3,
+                            //     ),
+                            //     Visibility(
+                            //       child:ClipOval(
+                            //         child: Container(
+                            //           height:40,
+                            //           width: 35,
+                            //           child: Text("${item!.rank}",style: TextStyle(color: Colors.white),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       visible:  index > 3,
+                            //     ),
+                            //   ],
+                            // ),
                             index < 3 ?  ClipOval(
-                              child: Image.asset(imagelist![index],
-                                height:35,
-                                width: 35,
-                              ),
-                            ) : ClipOval(
                               child: Container(
-                                height:35,
+                                height:40,
                                 width: 35,
+                                child: Image.network(item!.rankImage!,
+                                  height:35,
+                                  width: 35,
+                                ),
                               ),
+                            )
+                                : Row(
+                              children: [
+                                SizedBox(width: 15,),
+                                Text("${item.rank}",style: TextStyle(
+                                    color:Colors.white ),),
+                              ],
                             ),
-                        SizedBox(width: 5,),
-                            Text("${id!}",style: TextStyle(color: Colors.white),),
-                          SizedBox(width: 40,),
-                            Text("${score}",style: TextStyle(color: Colors.white),),
+                            index < 3 ? SizedBox(width: 5,) : SizedBox(width:17,),
+                            Text("${item!.userId}",style: TextStyle(color: Colors.white),),
+                            SizedBox(width: 40,),
+                            Text("${item!.totalScore}",style: TextStyle(color: Colors.white),),
                           ],
                         ),
                       );

@@ -176,7 +176,7 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> with TickerProvid
           ),
         ),
         Text(
-          '${_animation.value * 100}%',
+          '${correctRatio!.toInt()}',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
@@ -204,7 +204,8 @@ class _Drwaer_TotalscoreState extends State<Drwaer_Totalscore> with TickerProvid
           ),
         ),
         Text(
-          '${_animation2.value * 100}%',
+          // '${_animation2.value * 10}',
+          '${wrongRatio!.toInt()}',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,

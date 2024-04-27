@@ -6,7 +6,8 @@ class Base{
   static String app_version="1.0.0"; // if application update version need to change
 
   // static String baseURL="Http://192.168.10.30/hrapp/"; //new Live url(03/JAN/2024)
-  static String baseURL="http://192.168.0.236/manohar/"; //ethernet-LAN
+  // static String baseURL="http://192.168.0.236/manohar/"; //ethernet-LAN
+  static String baseURL="http://192.168.1.10/manohar/";//(manohar) //ethernet-LAN
 
 
   static double titlefont = 16;
@@ -18,6 +19,7 @@ class Base{
   static double noData = 20;
   static double positionfont = 9;
 
+//mano
 
   static Color redColor = Color(0xffec3225);
   static Color secondaryColor = Color(0xffc82297f4);
@@ -30,6 +32,7 @@ class Base{
 
   static String login="login.php";
   static String signup="signup.php";
+  static String profilephoto="profile_photo.phpp";
   static String profile="profile.php";
   static String editprofile="editprofile.php";
   static String leaderboard="leaderboard.php";
@@ -44,6 +47,8 @@ class Base{
   static String addcasestudy="insert_casestudy.php";
   static String count="count.php";
   static String insert_question="insert_subquestions.php";
+  static String timephp="timer.php";
+  static String testmessage="checking.php";
 
 
 }
