@@ -111,7 +111,7 @@ class _Add_QuestionState extends State<Add_Question> {
     setState(() {});
     ApiServices()
         .addcasequestion(
-            Useridcontroller.text, casecontroller.text, _selectedFileImage)
+        Useridcontroller.text, casecontroller.text, _selectedFileImage)
         .then((value) {
       if (value != null) {
         print("login");
@@ -235,7 +235,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -253,16 +253,16 @@ class _Add_QuestionState extends State<Add_Question> {
                   // Adjust height according to your UI requirements
                   child: _selectedFileImage != null
                       ? Image.file(
-                          _selectedFileImage!,
-                          fit: BoxFit.cover, // Adjust the BoxFit as needed
-                        )
+                    _selectedFileImage!,
+                    fit: BoxFit.cover, // Adjust the BoxFit as needed
+                  )
                       : _selectedImage != null && _selectedImage!.isNotEmpty
-                          ? Image.network(
-                              _selectedImage!,
-                              fit: BoxFit.cover, // Adjust the BoxFit as needed
-                            )
-                          : Icon(Icons.add_a_photo,
-                              size: 50, color: Colors.grey),
+                      ? Image.network(
+                    _selectedImage!,
+                    fit: BoxFit.cover, // Adjust the BoxFit as needed
+                  )
+                      : Icon(Icons.add_a_photo,
+                      size: 50, color: Colors.grey),
                 ),
               ),
               Row(
@@ -296,7 +296,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -330,11 +330,11 @@ class _Add_QuestionState extends State<Add_Question> {
                   // Replaced the empty Text widget with a TextField
                   controller: correctaswer1,
                   decoration: InputDecoration(
-                    hintText: 'Enter the correct Answer',
+                    hintText: 'Enter the correct option number Ex: 1',
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 10), // Add padding
+                    EdgeInsets.symmetric(horizontal: 10), // Add padding
                   ),
                 ),
               ),
@@ -372,7 +372,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -399,7 +399,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -426,7 +426,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -453,7 +453,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -491,7 +491,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -525,11 +525,11 @@ class _Add_QuestionState extends State<Add_Question> {
                   // Replaced the empty Text widget with a TextField
                   controller: correctaswer2,
                   decoration: InputDecoration(
-                    hintText: 'Enter the correct Answer',
+                    hintText: 'Enter the correct option number Ex: 1',
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 10), // Add padding
+                    EdgeInsets.symmetric(horizontal: 10), // Add padding
                   ),
                 ),
               ),
@@ -567,7 +567,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -594,7 +594,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -621,7 +621,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -648,7 +648,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -686,7 +686,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -720,7 +720,7 @@ class _Add_QuestionState extends State<Add_Question> {
                   // Replaced the empty Text widget with a TextField
                   controller: correctaswer3,
                   decoration: InputDecoration(
-                    hintText: 'Enter the correct Answer',
+                    hintText: 'Enter the correct option number Ex: 1',
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -761,7 +761,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -788,7 +788,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -815,7 +815,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -842,7 +842,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -880,7 +880,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -914,7 +914,7 @@ class _Add_QuestionState extends State<Add_Question> {
                   // Replaced the empty Text widget with a TextField
                   controller: correctaswer4,
                   decoration: InputDecoration(
-                    hintText: 'Enter the correct Answer',
+                    hintText: 'Enter the correct option number Ex: 1',
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -955,7 +955,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -982,7 +982,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -1009,7 +1009,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -1036,7 +1036,7 @@ class _Add_QuestionState extends State<Add_Question> {
                     border: InputBorder.none,
                     // Remove the border of the TextField
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, left: 10), // Add padding
+                    EdgeInsets.only(bottom: 10, left: 10), // Add padding
                   ),
                 ),
               ),
@@ -1061,8 +1061,8 @@ class _Add_QuestionState extends State<Add_Question> {
             print(Useridcontroller.text);
             print(casecontroller.text);
             print(_selectedFileImage);
-           //
-           //
+            //
+            //
             print("first");
             print("${Useridcontroller.text}");
             print(mainquestion1.text);
@@ -1073,7 +1073,7 @@ class _Add_QuestionState extends State<Add_Question> {
             print( fourthoption1.text);
 
             print("second");
-           print(mainquestion2.text);
+            print(mainquestion2.text);
             print( correctaswer2.text);
             print( firstoption2.text);
             print( secondoption2.text);
@@ -1146,7 +1146,7 @@ class _Add_QuestionState extends State<Add_Question> {
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedImage =
-        await picker.pickImage(source: source, imageQuality: 50);
+    await picker.pickImage(source: source, imageQuality: 50);
     if (pickedImage != null) {
       setState(() {
         _selectedFileImage = File(pickedImage.path);

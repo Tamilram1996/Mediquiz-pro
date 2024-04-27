@@ -6,6 +6,8 @@ import '../../API_services/Api_Services.dart';
 import '../../Utils/shared_preference.dart';
 import '../../Utils/utils.dart';
 import 'Reviewscreen.dart';
+import 'package:flutter/services.dart';
+
 
 String? userid;
 String? Correctanswer;
@@ -38,6 +40,7 @@ class _Totalscore_MainscreenState extends State<Totalscore_Mainscreen> with Tick
     super.initState();
     bioIdFunction();
     print(Totalquestion);
+
   }
 
   void bioIdFunction() async {
@@ -99,86 +102,103 @@ class _Totalscore_MainscreenState extends State<Totalscore_Mainscreen> with Tick
     catch (e) {}
   }
 
+  GlobalKey<NavigatorState> _yourKey = GlobalKey<NavigatorState>();
+  _backPressed(GlobalKey<NavigatorState> _yourKey) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Totalscore_Mainscreen()),
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back_ios),
+    return WillPopScope(
+      onWillPop:() => _backPressed(_yourKey),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              // Navigator.pop(context);
+              // _scaffoldKey.currentState!.openDrawer();
+            },
+            icon: Icon(Icons.arrow_back_ios),
+          ),
+          centerTitle: true,
+          title: Text("Total Score"),
+          actions: [
+            GestureDetector(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Reviewscreen(),
+                  ),
+                );
+              },
+              child: Row(
+                children: [
+                  Text("Review",
+                    style: TextStyle(color: Color(0xFF434B90)),
+                  ),
+                  SizedBox(width: 20,)
+                ],
+              ),
+            )
+          ],
         ),
-        centerTitle: true,
-        title: Text("Total Score"),
-        actions: [
-          GestureDetector(
-            onTap: (){
+        body: Totalquestion ==null ? loaderWidget() : Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(height: 60,),
+            _buildStackForCorrectAnswer(),
+            SizedBox(height: 10,),
+            Text(
+              'Correct Answer',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 60,),
+            _buildStackForWrongAnswer(),
+            SizedBox(height: 10,),
+            Text(
+              'Wrong Answer',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 90,),
+          ],
+        ),
+        bottomSheet: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 45,
+          child: ElevatedButton(
+            child: Text(
+              "Next",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+            ),
+            onPressed: () {
+              print("Congratulation_screen");
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Reviewscreen(),
+                  builder: (context) => Congratulation_screen(),
                 ),
               );
             },
-            child: Text("Review",
-            style: TextStyle(color: Color(0xFF434B90)),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              backgroundColor: Color(0xFF434B90),
             ),
-          )
-        ],
-      ),
-      body: Totalquestion ==null ? loaderWidget() : Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(height: 60,),
-          _buildStackForCorrectAnswer(),
-          SizedBox(height: 10,),
-          Text(
-            'Correct Answer',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 60,),
-          _buildStackForWrongAnswer(),
-          SizedBox(height: 10,),
-          Text(
-            'Wrong Answer',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 90,),
-        ],
-      ),
-      bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 45,
-        child: ElevatedButton(
-          child: Text(
-            "Next",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
-          ),
-          onPressed: () {
-            print("Congratulation_screen");
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Congratulation_screen(),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            backgroundColor: Color(0xFF434B90),
           ),
         ),
       ),
     );
+
   }
 
   Widget _buildStackForCorrectAnswer() {
@@ -198,7 +218,7 @@ class _Totalscore_MainscreenState extends State<Totalscore_Mainscreen> with Tick
           ),
         ),
         Text(
-          '${_animation.value * 100}%',
+          '${correctRatio!.toInt()}',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
@@ -226,7 +246,7 @@ class _Totalscore_MainscreenState extends State<Totalscore_Mainscreen> with Tick
           ),
         ),
         Text(
-          '${_animation2.value * 100}%',
+          '${wrongRatio!.toInt()}',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,

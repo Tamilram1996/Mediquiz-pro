@@ -1,14 +1,14 @@
-class SigupModel {
-  SigupModel({
+class TestMessageModel {
+  TestMessageModel({
     required this.status,
     required this.message,
   });
 
-  final String? status;
+  final int? status;
   final String? message;
 
-  factory SigupModel.fromJson(Map<String, dynamic> json){
-    return SigupModel(
+  factory TestMessageModel.fromJson(Map<String, dynamic> json){
+    return TestMessageModel(
       status: json["status"],
       message: json["message"],
     );

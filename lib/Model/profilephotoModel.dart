@@ -1,5 +1,5 @@
-class SigupModel {
-  SigupModel({
+class ProfilephotoModel {
+  ProfilephotoModel({
     required this.status,
     required this.message,
   });
@@ -7,8 +7,8 @@ class SigupModel {
   final String? status;
   final String? message;
 
-  factory SigupModel.fromJson(Map<String, dynamic> json){
-    return SigupModel(
+  factory ProfilephotoModel.fromJson(Map<String, dynamic> json){
+    return ProfilephotoModel(
       status: json["status"],
       message: json["message"],
     );
